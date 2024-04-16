@@ -12,6 +12,9 @@ public class FloorGenerator : MonoBehaviour
     [SerializeField] private Image demoUiRoom;
     private List<Room> roomList = new List<Room>();//list of created rooms
     private int[,] roomGrid = new int[mapMax, mapMax];//grid layout of room positions
+    private Vector2 currentRoom = new Vector2((mapMax + 1) / 2, (mapMax + 1) / 2);
+    [SerializeField] private Camera mainCam;
+    [SerializeField] private PlayerMovement player;
 
     // Start is called before the first frame update
     void Start()
@@ -32,6 +35,7 @@ public class FloorGenerator : MonoBehaviour
         roomGrid = new int[mapMax, mapMax];
     }
 
+    //Generate the layout of the level by making rooms
     public void GenerateFloor(int rooms)
     {
         //make first 
@@ -110,6 +114,43 @@ public class FloorGenerator : MonoBehaviour
                 }
             }
         }
+        //wipe useless doors
+        for(int i = 0; i < roomList.Count; i++)
+        {
+            roomList[i].DestroyUselessDoors();
+        }
+    }
+
+    //Move the camera and player to a new room
+    public void MoveRoom(int direction)
+    {
+        Vector3 destPos = new Vector3(16*Mathf.RoundToInt(currentRoom.x + -Mathf.Cos(Mathf.Deg2Rad * direction * 90) - ((mapMax + 1) / 2)), 10*Mathf.RoundToInt(currentRoom.y + Mathf.Sin(Mathf.Deg2Rad * direction * 90) - ((mapMax + 1) / 2)), -10);
+        Vector3 pdestPos = new Vector3((player.transform.position.x + 3.015f*-Mathf.Cos(Mathf.Deg2Rad * direction * 90)), (player.transform.position.y + 3.015f*Mathf.Sin(Mathf.Deg2Rad * direction * 90)), player.transform.position.z);
+        StartCoroutine("MovePlayer", pdestPos);
+        StartCoroutine("MoveCamera", destPos);
+        currentRoom = new Vector2(Mathf.RoundToInt(currentRoom.x + -Mathf.Cos(Mathf.Deg2Rad * direction * 90)), Mathf.RoundToInt(currentRoom.y + Mathf.Sin(Mathf.Deg2Rad * direction * 90)));
+    }
+
+    private IEnumerator MoveCamera(Vector3 destPos)
+    {
+        for(int i = 0; i < 65; i++)
+        {
+            mainCam.transform.position = Vector3.Lerp(mainCam.transform.position, destPos, 0.075f);
+            yield return new WaitForSeconds(0.01f);
+        }
+        mainCam.transform.position = destPos;
+    }
+
+    private IEnumerator MovePlayer(Vector3 destPos)
+    {
+        player.GetComponent<BoxCollider2D>().enabled = false;
+        for(int i = 0; i < 75; i++)
+        {
+            player.transform.position = Vector3.Lerp(player.transform.position, destPos, 0.2f);
+            yield return new WaitForSeconds(0.01f);
+        }
+        player.transform.position = destPos;
+        player.GetComponent<BoxCollider2D>().enabled = true;
     }
 
     // Update is called once per frame

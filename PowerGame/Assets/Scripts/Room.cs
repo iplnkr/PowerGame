@@ -13,6 +13,10 @@ public class Room : MonoBehaviour
     private int idNumber; //proper ids start at 1
     private Vector2 position;
     private Image minimapSelf;
+    [SerializeField] private GameObject door1;
+    [SerializeField] private GameObject door2;
+    [SerializeField] private GameObject door3;
+    [SerializeField] private GameObject door4;
 
     //set starting values for a room
     public void StartRoom (int id, Vector2 pos)
@@ -58,6 +62,27 @@ public class Room : MonoBehaviour
         Destroy(minimapSelf.gameObject);
     }
 
+    //destroy all doors without something on other side
+    public void DestroyUselessDoors()
+    {
+        if(up == null)
+        {
+            Destroy(door1);
+        }
+        if(right == null)
+        {
+            Destroy(door2);
+        }
+        if(down == null)
+        {
+            Destroy(door3);
+        }
+        if(left == null)
+        {
+            Destroy(door4);
+        }
+    }
+
     //general get and set functions
 
     public void SetUp(Room u)
@@ -88,7 +113,7 @@ public class Room : MonoBehaviour
     public void SetPosition(Vector2 pos)
     {
         position = pos;
-        transform.position = new Vector3((pos.x - ((mapMax + 1) / 2)) * 16, (pos.y - ((mapMax + 1) / 2)) * 9, 0);
+        transform.position = new Vector3((pos.x - ((mapMax + 1) / 2)) * 16, (pos.y - ((mapMax + 1) / 2)) * 10, 0);
     }
 
     public void SetMinimap(Image map)
