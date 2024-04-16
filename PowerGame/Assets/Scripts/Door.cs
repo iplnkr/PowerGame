@@ -10,7 +10,7 @@ public class Door : MonoBehaviour
     private bool isOpen = true;
     [SerializeField] private int direction = 1;//u, r, d, l  =  1, 2, 3, 4
     [SerializeField] private FloorGenerator floorGen;
-    private float waitTime = 0.85f;
+    private float waitTime = 0.95f;
 
     // Start is called before the first frame update
     void Start()
