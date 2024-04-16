@@ -41,3 +41,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: BlackBars
+    uniqueID: 3983061433
+    locked: 0
+  - name: Test
+    uniqueID: 1862697699
+    locked: 0
+  - name: TorchLight
+    uniqueID: 3859391159
+    locked: 0
+  - name: Default2
+    uniqueID: 3119907865
+    locked: 0

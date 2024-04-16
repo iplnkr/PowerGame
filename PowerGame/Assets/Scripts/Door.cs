@@ -9,7 +9,7 @@ public class Door : MonoBehaviour
     private bool isLeadingDoor = false;//only use one door to count the door cooldown
     private bool isOpen = true;
     [SerializeField] private int direction = 1;//u, r, d, l  =  1, 2, 3, 4
-    [SerializeField] private FloorGenerator floorGen;
+    [SerializeField] private LevelController floorGen;
     private float waitTime = 0.95f;
 
     // Start is called before the first frame update

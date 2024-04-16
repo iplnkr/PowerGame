@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FloorGenerator : MonoBehaviour
+public class LevelController : MonoBehaviour
 {
 
     private static readonly int mapMax = 9;//maximum size of map
@@ -43,6 +43,7 @@ public class FloorGenerator : MonoBehaviour
         //make first 
         Room first = Instantiate(demoRoom);
         first.gameObject.SetActive(true);
+        first.transform.parent = this.transform;
         first.StartRoom(1, new Vector2((mapMax + 1) / 2, (mapMax + 1) / 2));
         roomList.Add(first);
         roomGrid[(mapMax+1)/2, (mapMax+1)/2] = 1;
@@ -50,7 +51,6 @@ public class FloorGenerator : MonoBehaviour
         Image minimapFirst = Instantiate(demoUiRoom);
         minimapFirst.transform.parent = miniMapPanel.transform;
         minimapFirst.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
-        //minimapFirst.gameObject.SetActive(true);
         minimapFirst.GetComponent<RectTransform>().anchoredPosition  = new Vector2(0, 0);
         first.SetMinimap(minimapFirst);
         //Make all other rooms
@@ -68,6 +68,7 @@ public class FloorGenerator : MonoBehaviour
             Vector2 prevRoomPos = roomList[selectedRoomId].GetPosition();
             Room newRoom = Instantiate(demoRoom);
             newRoom.gameObject.SetActive(true);
+            newRoom.transform.parent = this.transform;
             newRoom.StartRoom(i + 1, new Vector2(Mathf.RoundToInt(prevRoomPos.x + -Mathf.Cos(Mathf.Deg2Rad * dire * 90)), Mathf.RoundToInt(prevRoomPos.y + Mathf.Sin(Mathf.Deg2Rad * dire * 90))));
             roomList.Add(newRoom);
             roomGrid[Mathf.RoundToInt(prevRoomPos.x + -Mathf.Cos(Mathf.Deg2Rad * dire * 90)), Mathf.RoundToInt(prevRoomPos.y + Mathf.Sin(Mathf.Deg2Rad * dire * 90))] = i + 1;
