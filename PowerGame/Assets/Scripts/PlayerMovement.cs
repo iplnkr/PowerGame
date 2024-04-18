@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private float batteryMax = 100;
     private float batteryPercent = 100;
     private float batteryDecayRate = 50;
-    private float batteryChargeRate = 20;
+    private float batteryChargeRate = 25;
 
     //hp
     [SerializeField] private Text healthText;
@@ -39,35 +39,40 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //player movement
+        //if player not crossing rooms
         if(movementCooldown <= 0)
         {
+            //player movement
             speedX = Input.GetAxisRaw("Horizontal");
             speedY = Input.GetAxisRaw("Vertical");
             rb.velocity = movementSpeed * new Vector2(speedX, speedY).normalized;
-        }
-        //torch controls
-        if(Input.GetKey(KeyCode.Mouse0))
-        {
-            batteryPercent = batteryPercent - (batteryDecayRate * Time.deltaTime);
-            if(batteryPercent < 0)
+            //torch controls
+            if(Input.GetKey(KeyCode.Mouse0))
             {
-                batteryPercent = 0;
-                torchLight.SetActive(false);
+                batteryPercent = batteryPercent - (batteryDecayRate * Time.deltaTime);
+                if(batteryPercent < 0)
+                {
+                    batteryPercent = 0;
+                    torchLight.SetActive(false);
+                }
+                else
+                {
+                    torchLight.SetActive(true);
+                }
             }
             else
             {
-                torchLight.SetActive(true);
+                torchLight.SetActive(false);
+                batteryPercent = batteryPercent + (batteryChargeRate * Time.deltaTime);
+                if(batteryPercent > batteryMax)
+                {
+                    batteryPercent = batteryMax;
+                }
             }
         }
         else
         {
             torchLight.SetActive(false);
-            batteryPercent = batteryPercent + (batteryChargeRate * Time.deltaTime);
-            if(batteryPercent > batteryMax)
-            {
-                batteryPercent = batteryMax;
-            }
         }
     }
 

@@ -83,7 +83,28 @@ public class Room : MonoBehaviour
         }
     }
 
-    //general get and set functions
+    //lock/unlock all possible doors
+    public void LockDoors(bool locking)
+    {
+        if(up != null)
+        {
+            door1.GetComponent<Door>().LockDoor(locking);
+        }
+        if(right != null)
+        {
+            door2.GetComponent<Door>().LockDoor(locking);
+        }
+        if(down != null)
+        {
+            door3.GetComponent<Door>().LockDoor(locking);
+        }
+        if(left != null)
+        {
+            door4.GetComponent<Door>().LockDoor(locking);
+        }
+    }
+
+    //---------------------------------------------------general get and set functions
 
     public void SetUp(Room u)
     {

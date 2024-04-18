@@ -4,20 +4,40 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private float maxHealth = 10;
-    private float currentHealth;
+    [SerializeField] protected float maxHealth = 10;
+    protected float currentHealth;
     [SerializeField] private GameObject healthDisplay;
-    private bool toBurn = false;
-    private bool toDamagePlayer = false;
+    protected bool toBurn = false;
+    protected bool toDamagePlayer = false;
     private PlayerMovement playerX;
+    [SerializeField] protected RoomLayoutDetails roomImIn;
+    private bool startedMoving = false;
 
     // Start is called before the first frame update
     void Start()
     {
         currentHealth = maxHealth;
+        if(roomImIn == null)
+        {
+            roomImIn = FindObjectOfType<RoomLayoutDetails>();
+        }
+        StartAddOn();
+        Invoke("StartActivity", 1.25f);
     }
 
-    // Update is called once per frame
+    //enable movement after room loading
+    private void StartActivity()
+    {
+        startedMoving = true;
+    }
+
+    //Allow Inheritors to add on to start by overriding this
+    public virtual void StartAddOn()
+    {
+
+    }
+
+
     void FixedUpdate()
     {
         //take damage
@@ -29,6 +49,10 @@ public class Enemy : MonoBehaviour
                 currentHealth = 0;
                 //TODO add drops
                 Debug.Log("Drop Loot");
+                if(roomImIn != null)
+                {
+                    roomImIn.Death();
+                }
                 Destroy(gameObject);
             }
             healthDisplay.transform.parent.gameObject.SetActive(true);
@@ -41,6 +65,17 @@ public class Enemy : MonoBehaviour
         {
             playerX.TakeDamage();
         }
+        //Allow Inheritors to add on to fixed update
+        if(startedMoving)
+        {
+            FixedUpdateAddOn();
+        }
+    }
+
+    //Allow Inheritors to add on to fixed update by overriding this
+    public virtual void FixedUpdateAddOn()
+    {
+
     }
 
     //set whether or not an enemy should take damage
@@ -56,6 +91,18 @@ public class Enemy : MonoBehaviour
             playerX = col.GetComponent<PlayerMovement>();
             toDamagePlayer = true;
         }
+
+        //Allow Inheritors to add on
+        if(startedMoving)
+        {
+            OnTriggerEnter2DAddOn(col);
+        }
+    }
+
+    //Allow Inheritors to add on to OnTriggerEnter2D by overriding this
+    public virtual void OnTriggerEnter2DAddOn(Collider2D col)
+    {
+
     }
 
     private void OnTriggerExit2D(Collider2D col)
@@ -68,5 +115,17 @@ public class Enemy : MonoBehaviour
         {
             toDamagePlayer = false;
         }
+        
+        //Allow Inheritors to add on
+        if(startedMoving)
+        {
+            OnTriggerExit2DAddOn(col);
+        }
+    }
+
+    //Allow Inheritors to add on to OnTriggerExit2D by overriding this
+    public virtual void OnTriggerExit2DAddOn(Collider2D col)
+    {
+
     }
 }

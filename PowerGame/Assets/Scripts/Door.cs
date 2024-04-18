@@ -24,7 +24,6 @@ public class Door : MonoBehaviour
         if(isLeadingDoor)
         {
             doorCooldown = doorCooldown - Time.fixedDeltaTime;
-            //Debug.Log(doorCooldown);
             if(doorCooldown <= 0)
             {
                 isLeadingDoor = false;
@@ -52,5 +51,10 @@ public class Door : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void LockDoor(bool locking)
+    {
+        isOpen = !locking;
     }
 }

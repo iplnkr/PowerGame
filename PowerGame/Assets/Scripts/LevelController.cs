@@ -13,6 +13,7 @@ public class LevelController : MonoBehaviour
     private List<Room> roomList = new List<Room>();//list of created rooms
     private int[,] roomGrid = new int[mapMax, mapMax];//grid layout of room positions
     private Vector2 currentRoom = new Vector2((mapMax + 1) / 2, (mapMax + 1) / 2);
+    [SerializeField] private RoomPalette roomPal;
     [SerializeField] private Camera mainCam;
     [SerializeField] private PlayerMovement player;
     [SerializeField] private Color fullyMapped;
@@ -22,6 +23,9 @@ public class LevelController : MonoBehaviour
     void Start()
     {
         GenerateFloor(23);
+        DecorateRoom(2);
+        DecorateRoom(3);
+        DecorateRoom(4);
     }
 
     public void ResetFloor()
@@ -126,6 +130,17 @@ public class LevelController : MonoBehaviour
         MapNewTile(first);
     }
 
+    //fill a room with objects and enemies based on presets from a palette
+    private void DecorateRoom(int roomId)
+    {
+        Room roomToDec = roomList[roomId-1];
+        GameObject layout = Instantiate(roomPal.GetRandomBasicRoomLayout());
+        layout.transform.parent = roomToDec.transform;
+        layout.transform.localPosition = Vector3.zero;
+        //layout.transform.position = roomToDec.transform.position;
+        //layout.SetActive(true);
+    }
+
     //Map the current square and semi-map the adjacent squares
     private void MapNewTile(Room roomToMap)
     {
@@ -199,7 +214,22 @@ public class LevelController : MonoBehaviour
         {
             center.GetLeft().gameObject.SetActive(true);
         }
-
+        //if there are enemies, lock all doors until killed
+        center.LockDoors(true);
+        if(center.GetComponentInChildren<RoomLayoutDetails>(true) != null)
+        {     
+            //activate objects in current room
+            center.GetComponentInChildren<RoomLayoutDetails>(true).gameObject.SetActive(true);
+            center.GetComponentInChildren<RoomLayoutDetails>(true).SetRoom(center);
+            if(center.GetComponentInChildren<RoomLayoutDetails>(true).numberOfEnemies <= 0)
+            {
+                center.LockDoors(false);
+            }
+        }
+        else
+        {
+            center.LockDoors(false);
+        }
     }
 
     //Move the camera and player to a new room
