@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private float batteryMax = 100;
     private float batteryPercent = 100;
     private float batteryDecayRate = 50;
-    private float batteryChargeRate = 25;
+    private float batteryChargeRate = 35;
 
     //hp
     [SerializeField] private Text healthText;

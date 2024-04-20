@@ -15,6 +15,10 @@ public class DVDBouncer : Enemy
     {
         xMovement = ((Random.Range(0, 2) * 2) - 1) * speedSlide;
         yMovement = ((Random.Range(0, 2) * 2) - 1) * speedSlide;
+        if(xMovement < 0)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+        }
     }
 
     public override void FixedUpdateAddOn()
@@ -24,6 +28,7 @@ public class DVDBouncer : Enemy
         if(Mathf.Abs(transform.localPosition.x) >= sideLimit)
         {
             xMovement = xMovement * -1;
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
         if(Mathf.Abs(transform.localPosition.y) >= topbottomLimit)
         {

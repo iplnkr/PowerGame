@@ -1,25 +1,25 @@
 fileFormatVersion: 2
-guid: f27a0592bc5244e47bba0f80c749d29f
+guid: 4401ed3ce70e66d4cba7e85acb1446f1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4988758169149512150
-    second: TempTilesheet_0
+      213: 6856512916152019476
+    second: StalkerSheet_0
   - first:
-      213: 4179887900831911956
-    second: TempTilesheet_1
+      213: 8144650506855428957
+    second: StalkerSheet_1
   - first:
-      213: -5089550083696102221
-    second: TempTilesheet_2
+      213: -5859798315206383972
+    second: StalkerSheet_2
   - first:
-      213: 5583452779845556292
-    second: TempTilesheet_3
+      213: -2938422654915873020
+    second: StalkerSheet_3
   - first:
-      213: 8266611479787195468
-    second: TempTilesheet_4
+      213: 7261276140543459910
+    second: StalkerSheet_4
   - first:
-      213: -7392897209365832839
-    second: TempTilesheet_5
+      213: 5244726914886426175
+    second: StalkerSheet_5
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -50,12 +50,12 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 2
-    wrapV: 2
-    wrapW: 2
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -64,9 +64,9 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 64
+  spritePixelsToUnits: 128
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 0
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -85,7 +85,7 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 7
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -97,7 +97,7 @@ TextureImporter:
     buildTarget: Standalone
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 7
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -109,7 +109,7 @@ TextureImporter:
     buildTarget: WebGL
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: 7
+    textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
@@ -121,13 +121,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TempTilesheet_0
+      name: StalkerSheet_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 128
-        width: 64
-        height: 64
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -135,20 +135,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a26e38170ee54cab0800000000000000
-      internalID: -4988758169149512150
+      spriteID: 41a6e1d7b2a372f50800000000000000
+      internalID: 6856512916152019476
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TempTilesheet_1
+      name: StalkerSheet_1
       rect:
         serializedVersion: 2
-        x: 64
-        y: 128
-        width: 64
-        height: 64
+        x: 256
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -156,20 +156,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 4101a0a56e1f10a30800000000000000
-      internalID: 4179887900831911956
+      spriteID: d53b2d8db7c970170800000000000000
+      internalID: 8144650506855428957
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TempTilesheet_2
+      name: StalkerSheet_2
       rect:
         serializedVersion: 2
-        x: 0
-        y: 64
-        width: 64
-        height: 64
+        x: 512
+        y: 256
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -177,41 +177,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3b4fbba1a294e59b0800000000000000
-      internalID: -5089550083696102221
+      spriteID: c96e0b69a70ddaea0800000000000000
+      internalID: -5859798315206383972
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TempTilesheet_3
-      rect:
-        serializedVersion: 2
-        x: 64
-        y: 64
-        width: 64
-        height: 64
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 4489cda88b86c7d40800000000000000
-      internalID: 5583452779845556292
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: TempTilesheet_4
+      name: StalkerSheet_3
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
-        height: 64
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -219,20 +198,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c4cc1eca757e8b270800000000000000
-      internalID: 8266611479787195468
+      spriteID: 40777cde920a837d0800000000000000
+      internalID: -2938422654915873020
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TempTilesheet_5
+      name: StalkerSheet_4
       rect:
         serializedVersion: 2
-        x: 64
+        x: 256
         y: 0
-        width: 64
-        height: 64
+        width: 256
+        height: 256
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -240,8 +219,29 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 97bd5c64827276990800000000000000
-      internalID: -7392897209365832839
+      spriteID: 642cc1d8d2c35c460800000000000000
+      internalID: 7261276140543459910
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StalkerSheet_5
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 0
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f3e5cb1675309c840800000000000000
+      internalID: 5244726914886426175
       vertices: []
       indices: 
       edges: []

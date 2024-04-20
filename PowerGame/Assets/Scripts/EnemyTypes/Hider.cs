@@ -20,6 +20,15 @@ public class Hider : Enemy
         float newX = Mathf.Max(Mathf.Min(transform.position.x + Random.Range(-2,3), sideLimit), -sideLimit);
         float newY = Mathf.Max(Mathf.Min(transform.position.y + Random.Range(-2,3), topbottomLimit), -topbottomLimit);
         strollTarget = new Vector3(newX, newY, -1);
+        //set facing direction
+        if(newX - transform.position.x < 0)
+        {
+            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        }
     }
 
     public override void FixedUpdateAddOn()
@@ -44,7 +53,18 @@ public class Hider : Enemy
                 //ensure not out of bounds
                 float newX = Mathf.Max(Mathf.Min(proposedMove.x, sideLimit), -sideLimit);
                 float newY = Mathf.Max(Mathf.Min(proposedMove.y, topbottomLimit), -topbottomLimit);
+                //set facing direction
+                if(newX - transform.position.x < 0)
+                {
+                    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                }
+                //move
                 transform.position = new Vector3(newX, newY, -1);
+                strollTarget = transform.position;
             }
             else
             {
@@ -56,10 +76,21 @@ public class Hider : Enemy
                 //ensure not out of bounds
                 float newX = Mathf.Max(Mathf.Min(proposedMove.x, sideLimit), -sideLimit);
                 float newY = Mathf.Max(Mathf.Min(proposedMove.y, topbottomLimit), -topbottomLimit);
+                //set facing direction
+                if(newX - transform.position.x < 0)
+                {
+                    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                }
+                //move                
                 transform.position = new Vector3(newX, newY, -1);
+                strollTarget = transform.position;
             }
         }
-        else
+        else//when not under torch
         {
             walkingTime = walkingTime - Time.fixedDeltaTime;
             //follow random route, but dont go through objects
@@ -72,6 +103,15 @@ public class Hider : Enemy
                 float newX = Mathf.Max(Mathf.Min(transform.position.x + Random.Range(-2,3), sideLimit), -sideLimit);
                 float newY = Mathf.Max(Mathf.Min(transform.position.y + Random.Range(-2,3), topbottomLimit), -topbottomLimit);
                 strollTarget = new Vector3(newX, newY, -1);
+                //set facing direction
+                if(newX - transform.position.x < 0)
+                {
+                    transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                }
+                else
+                {
+                    transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+                }
             }
         }
     }
