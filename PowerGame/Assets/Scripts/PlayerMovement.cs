@@ -13,7 +13,16 @@ public class PlayerMovement : MonoBehaviour
     //torch movement
     [SerializeField] private GameObject torch;
     [SerializeField] private GameObject torchLight;
-    [SerializeField] private Text batteryText;
+    [SerializeField] private Image batteryMask;
+    [SerializeField] private Image batteryIcon;
+    [SerializeField] private Image batteryMask2;
+    [SerializeField] private Image batteryIcon2;
+    [SerializeField] private Image batteryMask3;
+    [SerializeField] private Image batteryIcon3;
+    [SerializeField] private Image batteryMask4;
+    [SerializeField] private Image batteryIcon4;
+    [SerializeField] private Image batteryMask5;
+    [SerializeField] private Image batteryIcon5;
     private float batteryMax = 100;
     private float batteryPercent = 100;
     private float batteryDecayRate = 50;
@@ -21,10 +30,14 @@ public class PlayerMovement : MonoBehaviour
 
     //hp
     [SerializeField] private Text healthText;
-    private float healthMax = 3;
-    private float healthCurrent = 3;
+    private float healthMax = 5;
+    private float healthCurrent = 5;
     private bool isImmune = false;
     private float immuneCooldown;
+
+    //money
+    [SerializeField] private Text moneyText;
+    private float moneyCurrent = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -32,8 +45,11 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         healthCurrent = healthMax;
         batteryPercent = batteryMax;
-        healthText.text = "" + healthCurrent;
-        batteryText.text = "100";
+        moneyCurrent = 0;
+        healthText.text = " " + healthCurrent;
+        moneyText.text = " " + moneyCurrent;
+        batteryMask.GetComponent<RectTransform>().localPosition = new Vector3(-8, 0, 0);
+        batteryIcon.GetComponent<RectTransform>().localPosition = new Vector3(8, 0, 0);
     }
 
     // Update is called once per frame
@@ -89,7 +105,16 @@ public class PlayerMovement : MonoBehaviour
         mouseWorldPosition = new Vector3(mouseWorldPosition.x, mouseWorldPosition.y, transform.position.z);
         torch.transform.right = mouseWorldPosition - transform.position;
         //battery visuals
-        batteryText.text = "" + Mathf.RoundToInt((batteryPercent / batteryMax) * 100);
+        batteryMask.GetComponent<RectTransform>().localPosition = new Vector3(Mathf.Max(-110, Mathf.Min(-8, ((1.02f * batteryPercent) - 110))) + (batteryMask.GetComponent<RectTransform>().rect.size.x/2f), (batteryMask.GetComponent<RectTransform>().rect.size.y/2f), 0);
+        batteryIcon.GetComponent<RectTransform>().localPosition = new Vector3(Mathf.Abs(Mathf.Max(-110, Mathf.Min(-8, ((1.02f * batteryPercent) - 110)))), 0, 0);
+        batteryMask2.GetComponent<RectTransform>().localPosition = new Vector3(Mathf.Max(-110, Mathf.Min(-8, ((1.02f * batteryPercent) - 110 - 102))) + (batteryMask2.GetComponent<RectTransform>().rect.size.x/2f), (batteryMask2.GetComponent<RectTransform>().rect.size.y/2f), 0);
+        batteryIcon2.GetComponent<RectTransform>().localPosition = new Vector3(Mathf.Abs(Mathf.Max(-110, Mathf.Min(-8, ((1.02f * batteryPercent) - 110 - 102)))), 0, 0);
+        batteryMask3.GetComponent<RectTransform>().localPosition = new Vector3(Mathf.Max(-110, Mathf.Min(-8, ((1.02f * batteryPercent) - 110 - 102 - 102))) + (batteryMask3.GetComponent<RectTransform>().rect.size.x/2f), (batteryMask3.GetComponent<RectTransform>().rect.size.y/2f), 0);
+        batteryIcon3.GetComponent<RectTransform>().localPosition = new Vector3(Mathf.Abs(Mathf.Max(-110, Mathf.Min(-8, ((1.02f * batteryPercent) - 110 - 102 - 102)))), 0, 0);
+        batteryMask4.GetComponent<RectTransform>().localPosition = new Vector3(Mathf.Max(-110, Mathf.Min(-8, ((1.02f * batteryPercent) - 110 - 102 - 102 - 102))) + (batteryMask3.GetComponent<RectTransform>().rect.size.x/2f), (batteryMask3.GetComponent<RectTransform>().rect.size.y/2f), 0);
+        batteryIcon4.GetComponent<RectTransform>().localPosition = new Vector3(Mathf.Abs(Mathf.Max(-110, Mathf.Min(-8, ((1.02f * batteryPercent) - 110 - 102 - 102 - 102)))), 0, 0);
+        batteryMask5.GetComponent<RectTransform>().localPosition = new Vector3(Mathf.Max(-110, Mathf.Min(-8, ((1.02f * batteryPercent) - 110 - 102 - 102 - 102 - 102))) + (batteryMask3.GetComponent<RectTransform>().rect.size.x/2f), (batteryMask3.GetComponent<RectTransform>().rect.size.y/2f), 0);
+        batteryIcon5.GetComponent<RectTransform>().localPosition = new Vector3(Mathf.Abs(Mathf.Max(-110, Mathf.Min(-8, ((1.02f * batteryPercent) - 110 - 102 - 102 - 102 - 102)))), 0, 0);
         //immunity cooldown
         immuneCooldown = immuneCooldown - Time.fixedDeltaTime;
         if(immuneCooldown <= 0)
@@ -110,7 +135,7 @@ public class PlayerMovement : MonoBehaviour
         if(!isImmune)
         {
             healthCurrent = healthCurrent - 1;
-            healthText.text = "" + healthCurrent;
+            healthText.text = " " + healthCurrent;
             if(healthCurrent <= 0)
             {
                 Debug.Log("Death");//TODO add proper death
@@ -118,5 +143,22 @@ public class PlayerMovement : MonoBehaviour
             isImmune = true;
             immuneCooldown = 1;
         }
+    }
+
+    public void GainGold(int amt)
+    {
+        moneyCurrent = moneyCurrent + amt;
+        moneyText.text = " " + moneyCurrent;
+    }
+
+    public bool CanLoseGold(int amt)
+    {
+        return(amt >= moneyCurrent);
+    }
+
+    public void LoseGold(int amt)
+    {
+        moneyCurrent = moneyCurrent - amt;
+        moneyText.text = " " + moneyCurrent;
     }
 }

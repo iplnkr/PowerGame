@@ -17,6 +17,14 @@ public class Patroller : Enemy
             patrolArea = new Vector3[2];
             patrolArea[0] = new Vector3(transform.position.x - transform.localPosition.x + 7f, transform.position.y, transform.position.z);
             patrolArea[1] = new Vector3(transform.position.x - transform.localPosition.x - 7f, transform.position.y, transform.position.z);
+            if(patrolArea[0].x < transform.position.x)
+            {
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+            else
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
         }
     }
 
@@ -29,6 +37,15 @@ public class Patroller : Enemy
         if(Vector3.Distance(patrolArea[patrolTarget], transform.position) <= 0.5f)
         {
             patrolTarget = (patrolTarget + 1)%(patrolArea.Length);
+            
+            if(patrolArea[patrolTarget].x < transform.position.x)
+            {
+                transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
+            else
+            {
+                transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+            }
         }
     }
 

@@ -25,9 +25,10 @@ public class RoomLayoutDetails : MonoBehaviour
 
     public void Death()
     {
-        numberOfEnemies--;
-        if(numberOfEnemies == 0)
+        numberOfEnemies = FindObjectsOfType<Enemy>().Length;
+        if(numberOfEnemies <= 1)
         {
+            numberOfEnemies = 0;
             Debug.Log("All Killed");//TODO add animation
             currentRoom.LockDoors(false);
         }

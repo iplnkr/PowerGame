@@ -22,12 +22,12 @@ public class LevelController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GenerateFloor(23);
-        DecorateRoom(2);
-        DecorateRoom(3);
-        DecorateRoom(4);
+        //todo change later to start on tutorial
+        //start by generating level 1
+        GenerateFloorForLevel(1);
     }
 
+    //clear the current floor
     public void ResetFloor()
     {
         //destroy all rooms
@@ -39,6 +39,114 @@ public class LevelController : MonoBehaviour
         }
         roomList.Clear();
         roomGrid = new int[mapMax, mapMax];
+        //reset position
+        currentRoom = new Vector2((mapMax + 1) / 2, (mapMax + 1) / 2);
+        mainCam.transform.position = new Vector3(0, 0, -10);
+        miniMapPanel.GetComponent<RectTransform>().anchoredPosition  = new Vector2(0, 0);
+        player.transform.position = new Vector3(0, 0, -1);
+    }
+
+    //Generate the layout for a particular floor
+    public void GenerateFloorForLevel(int levelID)
+    {
+        int roomCount = 8;//how many rooms are in a floor
+        switch (levelID)
+        {
+            //level 1
+            case 1:
+                Debug.Log("Level 1");
+                GenerateFloor(roomCount);
+                //DecorateRoom(2, roomPal.GetRandomBasicRoomLayout());//temp
+                //DecorateRoom(3, roomPal.GetRandomBasicRoomLayout());//temp
+                //DecorateRoom(4, roomPal.GetRandomBasicRoomLayout());//temp
+                //todo insert rooms
+                DecorateRoom(roomCount, roomPal.GetExitRoomLayout(0));
+            break;
+            //level 2
+            case 2:
+                Debug.Log("Level 2");
+                GenerateFloor(roomCount);
+                //todo insert rooms
+                DecorateRoom(roomCount, roomPal.GetExitRoomLayout(1));
+            break;
+            //level 3
+            case 3:
+                Debug.Log("Level 3");
+                GenerateFloor(roomCount);
+                //todo insert rooms
+                DecorateRoom(roomCount, roomPal.GetExitRoomLayout(2));
+            break;
+            //level 1 Boss
+            case -1:
+                Debug.Log("Boss 1");
+                GenerateLineFloor(3);
+                DecorateRoom(3, roomPal.GetExitRoomLayout(3));
+            break;
+            //level 2 Boss
+            case -2:
+                Debug.Log("Boss 2");
+                GenerateLineFloor(3);
+                DecorateRoom(3, roomPal.GetExitRoomLayout(4));
+            break;
+            //level 3 Boss
+            case -3:
+                Debug.Log("Boss 3");
+                GenerateLineFloor(3);
+            break;
+            //tutorial
+            case 0:
+                Debug.Log("Tutorial");
+                GenerateLineFloor(3);
+                DecorateRoom(3, roomPal.GetExitRoomLayout(5));
+            break;
+        }
+    }
+
+    //Manuall Generate the layout of a line level by making rooms
+    public void GenerateLineFloor(int rooms)
+    {
+        //make first 
+        Room first = Instantiate(demoRoom);
+        first.gameObject.SetActive(true);
+        first.transform.parent = this.transform;
+        first.StartRoom(1, new Vector2((mapMax + 1) / 2, (mapMax + 1) / 2));
+        roomList.Add(first);
+        roomGrid[(mapMax+1)/2, (mapMax+1)/2] = 1;
+        //make first's minimap version
+        Image minimapFirst = Instantiate(demoUiRoom);
+        minimapFirst.transform.parent = miniMapPanel.transform;
+        minimapFirst.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
+        minimapFirst.GetComponent<RectTransform>().anchoredPosition  = new Vector2(0, 0);
+        first.SetMinimap(minimapFirst);
+
+        for (int i = 1; i < rooms; i++)
+        {
+            //make next room 
+            Room newRoom = Instantiate(demoRoom);
+            newRoom.gameObject.SetActive(true);
+            newRoom.transform.parent = this.transform;
+            newRoom.StartRoom(1, new Vector2((mapMax + 1) / 2, ((mapMax + 1) / 2) + i));
+            roomList.Add(newRoom);
+            roomGrid[(mapMax+1)/2, ((mapMax+1)/2)+i] = i + 1;
+            //make next room's minimap version
+            Image minimapNew = Instantiate(demoUiRoom);
+            minimapNew.transform.parent = miniMapPanel.transform;
+            minimapNew.GetComponent<RectTransform>().localScale = new Vector3(1,1,1);
+            //minimapNew.GetComponent<RectTransform>().anchoredPosition  = new Vector2(0, i);
+            minimapNew.GetComponent<RectTransform>().anchoredPosition  = new Vector2((newRoom.GetPosition().x - ((mapMax + 1) / 2)) * demoUiRoom.GetComponent<RectTransform>().sizeDelta.x, (newRoom.GetPosition().y - ((mapMax + 1) / 2)) * demoUiRoom.GetComponent<RectTransform>().sizeDelta.y);
+            newRoom.SetMinimap(minimapNew);
+
+            //make connections
+            newRoom.SetDown(roomList[i-1]);
+            roomList[i-1].SetUp(newRoom);
+        }
+        //wipe useless doors
+        for(int i = 0; i < roomList.Count; i++)
+        {
+            roomList[i].DestroyUselessDoors();
+        }
+        //set up minimap first room
+        MapNewTile(first);
     }
 
     //Generate the layout of the level by making rooms
@@ -131,10 +239,10 @@ public class LevelController : MonoBehaviour
     }
 
     //fill a room with objects and enemies based on presets from a palette
-    private void DecorateRoom(int roomId)
+    private void DecorateRoom(int roomId, GameObject roomLay)
     {
         Room roomToDec = roomList[roomId-1];
-        GameObject layout = Instantiate(roomPal.GetRandomBasicRoomLayout());
+        GameObject layout = Instantiate(roomLay);
         layout.transform.parent = roomToDec.transform;
         layout.transform.localPosition = Vector3.zero;
         //layout.transform.position = roomToDec.transform.position;
