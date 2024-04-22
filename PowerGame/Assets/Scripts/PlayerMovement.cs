@@ -34,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     private float healthCurrent = 5;
     private bool isImmune = false;
     private float immuneCooldown;
+    [SerializeField] private EyeMovement eyeMov;//used for invincibility animation
 
     //money
     [SerializeField] private Text moneyText;
@@ -120,6 +121,15 @@ public class PlayerMovement : MonoBehaviour
         if(immuneCooldown <= 0)
         {
             isImmune = false;
+            torch.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(torch.transform.GetChild(0).GetComponent<SpriteRenderer>().color.r, torch.transform.GetChild(0).GetComponent<SpriteRenderer>().color.g, torch.transform.GetChild(0).GetComponent<SpriteRenderer>().color.b, 1);            
+            GetComponent<SpriteRenderer>().color = new Color(GetComponent<SpriteRenderer>().color.r, GetComponent<SpriteRenderer>().color.g, GetComponent<SpriteRenderer>().color.b, 1);
+            eyeMov.InvinceSet(false);        
+        }
+        //do immunity animation
+        else
+        {
+            torch.transform.GetChild(0).GetComponent<SpriteRenderer>().color = new Color(torch.transform.GetChild(0).GetComponent<SpriteRenderer>().color.r, torch.transform.GetChild(0).GetComponent<SpriteRenderer>().color.g, torch.transform.GetChild(0).GetComponent<SpriteRenderer>().color.b, 0.2f + 0.8f * Mathf.Sin(Time.timeSinceLevelLoad * 32));
+            GetComponent<SpriteRenderer>().color = new Color(GetComponent<SpriteRenderer>().color.r, GetComponent<SpriteRenderer>().color.g, GetComponent<SpriteRenderer>().color.b, 0.2f + 0.8f * Mathf.Sin(Time.timeSinceLevelLoad * 32));
         }
     }
 
@@ -141,8 +151,20 @@ public class PlayerMovement : MonoBehaviour
                 Debug.Log("Death");//TODO add proper death
             }
             isImmune = true;
-            immuneCooldown = 1;
+            eyeMov.InvinceSet(true);
+            immuneCooldown = 2;
         }
+    }
+
+    public void GainHP(int amt)
+    {
+        healthCurrent = healthCurrent + amt;
+        healthText.text = " " + healthCurrent;
+    }
+
+    public void GainBattery()
+    {
+        batteryMax = batteryMax + 25;
     }
 
     public void GainGold(int amt)

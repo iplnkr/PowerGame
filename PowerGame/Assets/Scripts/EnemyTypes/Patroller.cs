@@ -31,7 +31,7 @@ public class Patroller : Enemy
     public override void FixedUpdateAddOn()
     {
         //follow patrol route, but dont go through objects
-        Vector3 destination = Vector3.Normalize((patrolArea[patrolTarget] - transform.position) - new Vector3(0,0,(patrolArea[patrolTarget] - transform.position).z)) * 3f * Time.fixedDeltaTime;
+        Vector3 destination = Vector3.Normalize((patrolArea[patrolTarget] - transform.position) - new Vector3(0,0,(patrolArea[patrolTarget] - transform.position).z)) * 4f * Time.fixedDeltaTime;
         transform.position = new Vector3(transform.position.x + destination.x * xMult, transform.position.y + destination.y * yMult, transform.position.z);
         //if reached, set next destination
         if(Vector3.Distance(patrolArea[patrolTarget], transform.position) <= 0.5f)

@@ -12,6 +12,7 @@ public class Enemy : MonoBehaviour
     private PlayerMovement playerX;
     [SerializeField] protected RoomLayoutDetails roomImIn;
     private bool startedMoving = false;
+    [SerializeField] protected GameObject loot;
 
     // Start is called before the first frame update
     void Start()
@@ -47,8 +48,10 @@ public class Enemy : MonoBehaviour
             if(currentHealth < 0)
             {
                 currentHealth = 0;
-                //TODO add drops
-                Debug.Log("Drop Loot");
+                //drop a coin and destroy enemy
+                loot.transform.parent = transform.parent;
+                loot.transform.localScale = new Vector3(Mathf.Abs(loot.transform.localScale.x), Mathf.Abs(loot.transform.localScale.y), Mathf.Abs(loot.transform.localScale.z));
+                loot.SetActive(true);
                 if(roomImIn != null)
                 {
                     roomImIn.Death();

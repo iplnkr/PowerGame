@@ -46,6 +46,8 @@ public class Stairs : MonoBehaviour
         while(fadeRing.GetComponent<RectTransform>().localScale.x > 1)
         {
             fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * (fadeRing.GetComponent<RectTransform>().localScale.x - 0.1f);
+            //also move player towards stairs centre
+            player.transform.position = Vector3.MoveTowards(player.transform.position, new Vector3(transform.position.x, transform.position.y, -1), 0.01f);
             yield return new WaitForSeconds(0.0005f);
         }
         fadeRing.GetComponent<RectTransform>().localScale = Vector3.one;

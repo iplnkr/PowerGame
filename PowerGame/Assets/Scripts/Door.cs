@@ -11,6 +11,10 @@ public class Door : MonoBehaviour
     [SerializeField] private int direction = 1;//u, r, d, l  =  1, 2, 3, 4
     [SerializeField] private LevelController floorGen;
     private float waitTime = 0.95f;
+    
+    //animations
+    [SerializeField] private Animator animDark;
+    [SerializeField] private Animator animLight;
 
     // Start is called before the first frame update
     void Start()
@@ -56,5 +60,22 @@ public class Door : MonoBehaviour
     public void LockDoor(bool locking)
     {
         isOpen = !locking;
+        //do door animations
+        if(locking)
+        {
+            animDark.Play("Base Layer._Door_Dark_Shut");
+            animLight.Play("Base Layer._Door_Light_Shut");
+        }
+        else
+        {
+            animDark.Play("Base Layer.DoorDark");
+            animLight.Play("Base Layer.DoorLight");
+        }
+    }
+
+    //play door shutting sound
+    public void ShutDoorSound()
+    {
+        //TODO play door shutting sound
     }
 }

@@ -56,7 +56,7 @@ public class LevelController : MonoBehaviour
             case 1:
                 Debug.Log("Level 1");
                 GenerateFloor(roomCount);
-                //DecorateRoom(2, roomPal.GetRandomBasicRoomLayout());//temp
+                DecorateRoom(2, roomPal.GetRandomBasicRoomLayout());//temp
                 //DecorateRoom(3, roomPal.GetRandomBasicRoomLayout());//temp
                 //DecorateRoom(4, roomPal.GetRandomBasicRoomLayout());//temp
                 //todo insert rooms

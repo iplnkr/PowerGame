@@ -12,6 +12,7 @@ public class EyeMovement : MonoBehaviour
     //
     [SerializeField] private GameObject iris1;
     [SerializeField] private GameObject iris2;
+    private bool isInvince = false;
 
     void FixedUpdate()
     {
@@ -63,5 +64,27 @@ public class EyeMovement : MonoBehaviour
         //keep irises stable        
         iris1.transform.up = Vector3.up;
         iris2.transform.up = Vector3.up;
+
+        //do invincibility animation
+        if(isInvince)
+        {
+            eyeball1.GetComponent<SpriteRenderer>().color = new Color(eyeball1.GetComponent<SpriteRenderer>().color.r, eyeball1.GetComponent<SpriteRenderer>().color.g, eyeball1.GetComponent<SpriteRenderer>().color.b, 0.2f + 0.8f * Mathf.Sin(Time.timeSinceLevelLoad * 32));
+            eyeball2.GetComponent<SpriteRenderer>().color = new Color(eyeball2.GetComponent<SpriteRenderer>().color.r, eyeball2.GetComponent<SpriteRenderer>().color.g, eyeball2.GetComponent<SpriteRenderer>().color.b, 0.2f + 0.8f * Mathf.Sin(Time.timeSinceLevelLoad * 32));
+            iris1.GetComponent<SpriteRenderer>().color = new Color(iris1.GetComponent<SpriteRenderer>().color.r, iris1.GetComponent<SpriteRenderer>().color.g, iris1.GetComponent<SpriteRenderer>().color.b, 0.2f + 0.8f * Mathf.Sin(Time.timeSinceLevelLoad * 32));
+            iris2.GetComponent<SpriteRenderer>().color = new Color(iris2.GetComponent<SpriteRenderer>().color.r, iris2.GetComponent<SpriteRenderer>().color.g, iris2.GetComponent<SpriteRenderer>().color.b, 0.2f + 0.8f * Mathf.Sin(Time.timeSinceLevelLoad * 32));
+        }
+        else
+        {
+            eyeball1.GetComponent<SpriteRenderer>().color = new Color(eyeball1.GetComponent<SpriteRenderer>().color.r, eyeball1.GetComponent<SpriteRenderer>().color.g, eyeball1.GetComponent<SpriteRenderer>().color.b, 1);
+            eyeball2.GetComponent<SpriteRenderer>().color = new Color(eyeball2.GetComponent<SpriteRenderer>().color.r, eyeball2.GetComponent<SpriteRenderer>().color.g, eyeball2.GetComponent<SpriteRenderer>().color.b, 1);
+            iris1.GetComponent<SpriteRenderer>().color = new Color(iris1.GetComponent<SpriteRenderer>().color.r, iris1.GetComponent<SpriteRenderer>().color.g, iris1.GetComponent<SpriteRenderer>().color.b, 1);
+            iris2.GetComponent<SpriteRenderer>().color = new Color(iris2.GetComponent<SpriteRenderer>().color.r, iris2.GetComponent<SpriteRenderer>().color.g, iris2.GetComponent<SpriteRenderer>().color.b, 1);
+        }
+    }
+
+    //for invincibility flashing
+    public void InvinceSet(bool setval)
+    {
+        isInvince = setval;
     }
 }
