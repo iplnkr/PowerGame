@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour
         //take damage
         if(toBurn)
         {
-            currentHealth = currentHealth - (4 * Time.fixedDeltaTime);
+            currentHealth = currentHealth - (4.5f * Time.fixedDeltaTime);
             if(currentHealth < 0)
             {
                 currentHealth = 0;

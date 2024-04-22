@@ -18,13 +18,13 @@ public class LevelController : MonoBehaviour
     [SerializeField] private PlayerMovement player;
     [SerializeField] private Color fullyMapped;
     [SerializeField] private Color semiMapped;
+    [SerializeField] private Text levelName;
 
     // Start is called before the first frame update
     void Start()
     {
-        //todo change later to start on tutorial
-        //start by generating level 1
-        GenerateFloorForLevel(1);
+        //start by generating tutorial level
+        GenerateFloorForLevel(0);
     }
 
     //clear the current floor
@@ -49,55 +49,77 @@ public class LevelController : MonoBehaviour
     //Generate the layout for a particular floor
     public void GenerateFloorForLevel(int levelID)
     {
-        int roomCount = 8;//how many rooms are in a floor
+        int roomCount = 15;//how many rooms are in a floor
         switch (levelID)
         {
             //level 1
             case 1:
                 Debug.Log("Level 1");
+                levelName.text = "3rd Floor";
                 GenerateFloor(roomCount);
                 DecorateRoom(2, roomPal.GetRandomBasicRoomLayout());//temp
                 //DecorateRoom(3, roomPal.GetRandomBasicRoomLayout());//temp
                 //DecorateRoom(4, roomPal.GetRandomBasicRoomLayout());//temp
-                //todo insert rooms
+                //todo insert 
+                //add 2 shops and staircase
+                DecorateRoom(5, roomPal.GetSpecialRoomLayout(0));
+                DecorateRoom(10, roomPal.GetSpecialRoomLayout(0));
                 DecorateRoom(roomCount, roomPal.GetExitRoomLayout(0));
             break;
             //level 2
             case 2:
                 Debug.Log("Level 2");
+                levelName.text = "2nd Floor";
                 GenerateFloor(roomCount);
                 //todo insert rooms
+                //add 2 shops and staircase
+                DecorateRoom(5, roomPal.GetSpecialRoomLayout(0));
+                DecorateRoom(10, roomPal.GetSpecialRoomLayout(0));
                 DecorateRoom(roomCount, roomPal.GetExitRoomLayout(1));
             break;
             //level 3
             case 3:
                 Debug.Log("Level 3");
+                levelName.text = "1st Floor";
                 GenerateFloor(roomCount);
                 //todo insert rooms
+                //add 2 shops and staircase
+                DecorateRoom(5, roomPal.GetSpecialRoomLayout(0));
+                DecorateRoom(10, roomPal.GetSpecialRoomLayout(0));
                 DecorateRoom(roomCount, roomPal.GetExitRoomLayout(2));
             break;
             //level 1 Boss
             case -1:
                 Debug.Log("Boss 1");
+                levelName.text = "3rd Floor Stairwell";
                 GenerateLineFloor(3);
                 DecorateRoom(3, roomPal.GetExitRoomLayout(3));
             break;
             //level 2 Boss
             case -2:
                 Debug.Log("Boss 2");
+                levelName.text = "2nd Floor Stairwell";
                 GenerateLineFloor(3);
                 DecorateRoom(3, roomPal.GetExitRoomLayout(4));
             break;
             //level 3 Boss
             case -3:
                 Debug.Log("Boss 3");
+                levelName.text = "1st Floor Stairwell";
                 GenerateLineFloor(3);
             break;
             //tutorial
             case 0:
                 Debug.Log("Tutorial");
+                levelName.text = "Your Room";
                 GenerateLineFloor(3);
+                DecorateRoom(1, roomPal.GetSpecialRoomLayout(1));
+                DecorateRoom(2, roomPal.GetSpecialRoomLayout(2));
                 DecorateRoom(3, roomPal.GetExitRoomLayout(5));
+                
+                //FindObjectOfType<Stairs>(true).gameObject.transform.parent.parent.gameObject.SetActive(true);
+                //FindObjectOfType<Stairs>(true).gameObject.transform.parent.gameObject.SetActive(true);
+                FindObjectOfType<Stairs>().PlayStartAnim();
             break;
         }
     }
@@ -245,6 +267,11 @@ public class LevelController : MonoBehaviour
         GameObject layout = Instantiate(roomLay);
         layout.transform.parent = roomToDec.transform;
         layout.transform.localPosition = Vector3.zero;
+        //make visible if in starting room
+        if(roomId == 1)
+        {
+            layout.SetActive(true);
+        }
         //layout.transform.position = roomToDec.transform.position;
         //layout.SetActive(true);
     }

@@ -6,6 +6,7 @@ public class Collectable : MonoBehaviour
 {
     [SerializeField] private PlayerMovement player;
     [SerializeField] private int collectableId = 0;//0 = default, 1 = coin, 2 = heart, 3 = torchDuration
+    [SerializeField] private int cost = 0;
 
     void Start()
     {
@@ -16,8 +17,12 @@ public class Collectable : MonoBehaviour
     {
         if(col.GetComponent<PlayerMovement>() != null)
         {
-            Collect();
-            Destroy(gameObject);
+            if(player.CanLoseGold(cost))
+            {
+                player.LoseGold(cost);
+                Collect();
+                Destroy(gameObject);
+            }
         }
     }
 

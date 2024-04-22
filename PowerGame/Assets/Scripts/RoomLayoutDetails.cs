@@ -13,7 +13,10 @@ public class RoomLayoutDetails : MonoBehaviour
         numberOfEnemies = FindObjectsOfType<Enemy>().Length;
         if(numberOfEnemies == 0)
         {
-            currentRoom.LockDoors(false);
+            if(currentRoom != null)
+            {
+                currentRoom.LockDoors(false);
+            }
         }
     }
 
@@ -29,7 +32,6 @@ public class RoomLayoutDetails : MonoBehaviour
         if(numberOfEnemies <= 1)
         {
             numberOfEnemies = 0;
-            Debug.Log("All Killed");//TODO add animation
             currentRoom.LockDoors(false);
         }
     }

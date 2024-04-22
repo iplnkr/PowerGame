@@ -8,8 +8,9 @@ public class Stairs : MonoBehaviour
     [SerializeField] LevelController level;
     [SerializeField] private PlayerMovement player;
     [SerializeField] int levelToLoad;
-    [SerializeField] Image fadeRing;
-    [SerializeField] Image fadeCover;
+    [SerializeField] private Image fadeRing;
+    [SerializeField] private Image fadeCover;
+    [SerializeField] private Text levelName;
     private bool used = false;
 
     // Start is called before the first frame update
@@ -22,6 +23,11 @@ public class Stairs : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void PlayStartAnim()
+    {
+        StartCoroutine("FadeInAtStartAnim");
     }
 
     private void OnTriggerEnter2D(Collider2D col)
@@ -68,9 +74,68 @@ public class Stairs : MonoBehaviour
         }
         fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * 30;
         fadeRing.gameObject.SetActive(false);
+        transform.position = Vector3.one * 50;//move stairs far enough away not be be accidentally retriggered
         //re-enable player movement
         player.SetMovementCooldown(0.1f);
+        //show level name
+        levelName.color = new Color(1,1,1,0);
+        float colAlph = 0;
+        while(colAlph < 0.8f)
+        {
+            levelName.color = levelName.color + new Color(0,0,0, 0.025f);
+            colAlph += 0.025f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        levelName.color = new Color(1,1,1,0.8f);
+        colAlph = 0.8f;
+        yield return new WaitForSeconds(1.5f);
+        while(colAlph > 0)
+        {
+            levelName.color = levelName.color - new Color(0,0,0, 0.025f);
+            colAlph -= 0.025f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        levelName.color = new Color(1,1,1,0);
         //destroy this object
         Destroy(gameObject);
+    }
+
+    IEnumerator FadeInAtStartAnim()
+    {  
+        //disable player movement
+        player.SetMovementCooldown(10000);
+
+        //fade in
+        fadeCover.gameObject.SetActive(false);
+        fadeRing.GetComponent<RectTransform>().localScale = Vector3.one;
+        while(fadeRing.GetComponent<RectTransform>().localScale.x < 30)
+        {
+            fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * (fadeRing.GetComponent<RectTransform>().localScale.x + 0.1f);
+            yield return new WaitForSeconds(0.0005f);
+        }
+        fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * 30;
+        fadeRing.gameObject.SetActive(false);
+        transform.position = Vector3.one * 50;//move stairs far enough away not be be accidentally retriggered
+        //re-enable player movement
+        player.SetMovementCooldown(0.1f);
+        //show level name
+        levelName.color = new Color(1,1,1,0);
+        float colAlph = 0;
+        while(colAlph < 0.8f)
+        {
+            levelName.color = levelName.color + new Color(0,0,0, 0.025f);
+            colAlph += 0.025f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        levelName.color = new Color(1,1,1,0.8f);
+        colAlph = 0.8f;
+        yield return new WaitForSeconds(1.5f);
+        while(colAlph > 0)
+        {
+            levelName.color = levelName.color - new Color(0,0,0, 0.025f);
+            colAlph -= 0.025f;
+            yield return new WaitForSeconds(0.05f);
+        }
+        levelName.color = new Color(1,1,1,0);
     }
 }

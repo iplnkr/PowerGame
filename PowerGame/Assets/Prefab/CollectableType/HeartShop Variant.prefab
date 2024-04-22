@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &4704986245542719274
+--- !u!1001 &9005024568754008619
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -8,8 +8,12 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 9068782276116035952, guid: 21c8dd9ca0030dd4288e20251c1c61ee, type: 3}
+      propertyPath: cost
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 9068782276116035952, guid: 21c8dd9ca0030dd4288e20251c1c61ee, type: 3}
       propertyPath: collectableId
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9068782276116035953, guid: 21c8dd9ca0030dd4288e20251c1c61ee, type: 3}
       propertyPath: m_RootOrder
@@ -65,12 +69,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9068782276116035956, guid: 21c8dd9ca0030dd4288e20251c1c61ee, type: 3}
       propertyPath: m_Name
-      value: CoinPickup
+      value: HeartShop Variant
       objectReference: {fileID: 0}
     - target: {fileID: 9068782276116035958, guid: 21c8dd9ca0030dd4288e20251c1c61ee, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 6438877245489511817, guid: b6608afdfe795ae4fbf65a3d1fa33044, type: 3}
+      objectReference: {fileID: -2338997845517572733, guid: b6608afdfe795ae4fbf65a3d1fa33044, type: 3}
     - target: {fileID: 9068782276116035958, guid: 21c8dd9ca0030dd4288e20251c1c61ee, type: 3}
       propertyPath: m_Color.b
       value: 0.8

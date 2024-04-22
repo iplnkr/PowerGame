@@ -175,7 +175,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool CanLoseGold(int amt)
     {
-        return(amt >= moneyCurrent);
+        return(amt <= moneyCurrent);
     }
 
     public void LoseGold(int amt)
