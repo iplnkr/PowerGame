@@ -268,6 +268,7 @@ MonoBehaviour:
   healthDisplay: {fileID: 6873427816080443443}
   roomImIn: {fileID: 0}
   loot: {fileID: 8932319565770258947}
+  lightSelf: {fileID: 6873427817058441248}
 --- !u!61 &6873427816929026298
 BoxCollider2D:
   m_ObjectHideFlags: 0

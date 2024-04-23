@@ -371,6 +371,7 @@ MonoBehaviour:
   healthDisplay: {fileID: 3333482326852116154}
   roomImIn: {fileID: 0}
   loot: {fileID: 4049079055487972549}
+  lightSelf: {fileID: 3333482325741473449}
   patrolArea: []
 --- !u!61 &3333482327748933235
 BoxCollider2D:

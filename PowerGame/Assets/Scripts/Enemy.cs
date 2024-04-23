@@ -13,6 +13,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected RoomLayoutDetails roomImIn;
     private bool startedMoving = false;
     [SerializeField] protected GameObject loot;
+    [SerializeField] protected GameObject lightSelf;//the masked version of the character
+    private bool smokeCopyMade = false;
+    private bool dealsDamage = true;
 
     // Start is called before the first frame update
     void Start()
@@ -56,7 +59,43 @@ public class Enemy : MonoBehaviour
                 {
                     roomImIn.Death();
                 }
-                Destroy(gameObject);
+                //if has death animation, do it
+                if(GetComponent<Animator>() != null)
+                {
+                    if((GetComponent<Animator>().HasState(0, Animator.StringToHash("Base Layer.SmokeAndDie"))) && (lightSelf.GetComponent<Animator>().HasState(0, Animator.StringToHash("Base Layer.Smoke"))))
+                    {
+                        GetComponent<SpriteRenderer>().color = new Color(0.3333333f, 0.3333333f, 0.3333333f, 1);
+                        lightSelf.GetComponent<Animator>().Play("Base Layer.Smoke");
+                        GetComponent<Animator>().Play("Base Layer.SmokeAndDie");
+                    }
+                }
+                else//otherwise create a copy of the death animation to use
+                {
+                    //smoke for death animation of enemies that dont use an animator
+                    //spare smoke backup is stored as first grandchild of palette
+                    GameObject spareSmoke = FindObjectOfType<RoomPalette>().transform.GetChild(0).transform.GetChild(0).gameObject;
+                    if(!smokeCopyMade)
+                    {
+                        smokeCopyMade = true;
+                        GameObject deathSmoke = Instantiate(spareSmoke);
+                        deathSmoke.transform.parent = transform;
+                        deathSmoke.transform.localPosition = new Vector3(0, 0, -1);
+                        deathSmoke.SetActive(true);
+                        deathSmoke.transform.parent = null;
+                        if(deathSmoke.GetComponent<Animator>() != null)
+                        {
+                            if((deathSmoke.GetComponent<Animator>().HasState(0, Animator.StringToHash("Base Layer.Smoke"))) && (deathSmoke.transform.GetChild(0).GetComponent<Animator>().HasState(0, Animator.StringToHash("Base Layer.Smoke"))))
+                            {
+                                deathSmoke.GetComponent<Animator>().Play("Base Layer.Smoke");
+                                deathSmoke.transform.GetChild(0).GetComponent<Animator>().Play("Base Layer.Smoke");
+                                SelfDestruct();
+                            }
+                        }
+                    }
+                }
+                startedMoving = false;
+                dealsDamage = false;
+                //SelfDestruct();
             }
             healthDisplay.transform.parent.gameObject.SetActive(true);
             healthDisplay.SetActive(true);
@@ -66,13 +105,22 @@ public class Enemy : MonoBehaviour
         //deal damage
         if(toDamagePlayer)
         {
-            playerX.TakeDamage();
+            if(dealsDamage)
+            {
+                playerX.TakeDamage();
+            }
         }
         //Allow Inheritors to add on to fixed update
         if(startedMoving)
         {
             FixedUpdateAddOn();
         }
+    }
+
+    public void SelfDestruct()
+    {
+        GameObject self = gameObject;
+        Destroy(self);
     }
 
     //Allow Inheritors to add on to fixed update by overriding this

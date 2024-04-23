@@ -23,13 +23,27 @@ public class RoomLayoutDetails : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        //force open all doors (in case of some softlock bug appearing)
+        if((Input.GetKey("1")) && (Input.GetKey("0")) && (Input.GetKey("z")) && (Input.GetKey("m")))
+        {
+            if(currentRoom != null)
+            {
+                currentRoom.LockDoors(false);
+            }
+        }
     }
 
     public void Death()
     {
+        DoubleCheck();
+        //check again in a second to avoid bug of when multiple enemies killed simulataneously
+        Invoke("DoubleCheck", 1);
+    }
+
+    private void DoubleCheck()
+    {
         numberOfEnemies = FindObjectsOfType<Enemy>().Length;
-        if(numberOfEnemies <= 1)
+        if(numberOfEnemies <= 0)
         {
             numberOfEnemies = 0;
             currentRoom.LockDoors(false);

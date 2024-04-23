@@ -25,6 +25,15 @@ public class Stairs : MonoBehaviour
         
     }
 
+    void OnDisable()
+    {        
+        //if object disabled before text fades out, vanish text
+        if(levelName != null)
+        {
+            levelName.color = new Color(1,1,1,0);
+        }
+    }
+
     public void PlayStartAnim()
     {
         StartCoroutine("FadeInAtStartAnim");

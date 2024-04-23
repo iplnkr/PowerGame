@@ -661,6 +661,7 @@ MonoBehaviour:
   healthDisplay: {fileID: 5369928871684011760}
   roomImIn: {fileID: 0}
   loot: {fileID: 6435859532593590847}
+  deathAnim: {fileID: 9100000, guid: 808a8203eb16daf46b8c13a97d60023c, type: 2}
 --- !u!61 &5369928872160828985
 BoxCollider2D:
   m_ObjectHideFlags: 0

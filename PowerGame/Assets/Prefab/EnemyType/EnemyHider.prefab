@@ -372,6 +372,7 @@ MonoBehaviour:
   healthDisplay: {fileID: 6795248056568989643}
   roomImIn: {fileID: 0}
   loot: {fileID: 2224102112093958168}
+  lightSelf: {fileID: 0}
 --- !u!61 &6795248057230372610
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -413,7 +414,8 @@ MonoBehaviour:
   maxHealth: 7
   healthDisplay: {fileID: 6795248056568989643}
   roomImIn: {fileID: 0}
-  loot: {fileID: 0}
+  loot: {fileID: 2224102112093958168}
+  lightSelf: {fileID: 6795248055482865624}
 --- !u!95 &8451915004974091707
 Animator:
   serializedVersion: 3

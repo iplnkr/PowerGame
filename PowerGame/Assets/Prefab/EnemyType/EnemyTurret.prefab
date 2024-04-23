@@ -105,6 +105,7 @@ MonoBehaviour:
   healthDisplay: {fileID: 3570901901748218330}
   roomImIn: {fileID: 0}
   loot: {fileID: 6413903475960693361}
+  lightSelf: {fileID: 3570901902775630281}
   bulletDemo: {fileID: 734590365076723076}
 --- !u!61 &3570901901034406163
 BoxCollider2D:

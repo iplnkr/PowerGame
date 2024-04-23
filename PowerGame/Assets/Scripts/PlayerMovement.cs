@@ -35,6 +35,8 @@ public class PlayerMovement : MonoBehaviour
     private bool isImmune = false;
     private float immuneCooldown;
     [SerializeField] private EyeMovement eyeMov;//used for invincibility animation
+    [SerializeField] private Image fadeRing;//used for death screen
+    [SerializeField] private Image fadeCoverDeath;//used for death screen
 
     //money
     [SerializeField] private Text moneyText;
@@ -148,12 +150,45 @@ public class PlayerMovement : MonoBehaviour
             healthText.text = " " + healthCurrent;
             if(healthCurrent <= 0)
             {
-                Debug.Log("Death");//TODO add proper death
+                Debug.Log("Death");//TODO add proper death animation
+                //make immune for a long time (about a day irl?) to avoid retriggering
+                immuneCooldown = 100000;
+                isImmune = true;
+                //destroy all nearby enemies
+                Enemy[] ens = FindObjectsOfType<Enemy>();
+                for(int i = ens.Length - 1; i >= 0; i--)
+                {
+                    Destroy(ens[i]);
+                }
+                //start fade out animation
+                StartCoroutine("FadeDeathAnim");
             }
-            isImmune = true;
-            eyeMov.InvinceSet(true);
-            immuneCooldown = 2;
+            else
+            {
+                isImmune = true;
+                eyeMov.InvinceSet(true);
+                immuneCooldown = 2;
+            }
         }
+    }
+
+    IEnumerator FadeDeathAnim()
+    {        
+        GameObject camPos = FindObjectOfType<Camera>().gameObject;
+        //disable player movement
+        SetMovementCooldown(10000);
+        //fade out
+        fadeRing.gameObject.SetActive(true);
+        fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * 30;
+        while(fadeRing.GetComponent<RectTransform>().localScale.x > 1)
+        {
+            fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * (fadeRing.GetComponent<RectTransform>().localScale.x - 0.1f);
+            transform.position = Vector3.Lerp(transform.position, new Vector3(camPos.transform.position.x, camPos.transform.position.y, -1), 0.01f);
+            yield return new WaitForSeconds(0.0005f);
+        }
+        fadeRing.GetComponent<RectTransform>().localScale = Vector3.one;
+        fadeCoverDeath.gameObject.SetActive(true);
+        yield return new WaitForSeconds(0.0005f);
     }
 
     public void GainHP(int amt)

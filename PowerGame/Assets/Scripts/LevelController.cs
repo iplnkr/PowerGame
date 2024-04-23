@@ -57,10 +57,16 @@ public class LevelController : MonoBehaviour
                 Debug.Log("Level 1");
                 levelName.text = "3rd Floor";
                 GenerateFloor(roomCount);
-                DecorateRoom(2, roomPal.GetRandomBasicRoomLayout());//temp
-                //DecorateRoom(3, roomPal.GetRandomBasicRoomLayout());//temp
-                //DecorateRoom(4, roomPal.GetRandomBasicRoomLayout());//temp
-                //todo insert 
+                //DecorateRoom(2, roomPal.GetRandomBasicRoomLayout());//temp todo remove
+                //Insert rooms
+                for(int i = 2; i < roomCount; i++)
+                {
+                    //for non-shops
+                    if((i != 5) && (i != 10))
+                    {
+                        DecorateRoom(i, roomPal.GetRandomBasicRoomLayout());
+                    }
+                }
                 //add 2 shops and staircase
                 DecorateRoom(5, roomPal.GetSpecialRoomLayout(0));
                 DecorateRoom(10, roomPal.GetSpecialRoomLayout(0));
@@ -71,7 +77,17 @@ public class LevelController : MonoBehaviour
                 Debug.Log("Level 2");
                 levelName.text = "2nd Floor";
                 GenerateFloor(roomCount);
-                //todo insert rooms
+                //Insert rooms
+                /*
+                for(int i = 2; i < roomCount; i++)
+                {
+                    //for non-shops
+                    if((i != 5) && (i != 10))
+                    {
+                        DecorateRoom(i, roomPal.GetRandomMediumRoomLayout());
+                    }
+                }
+                */
                 //add 2 shops and staircase
                 DecorateRoom(5, roomPal.GetSpecialRoomLayout(0));
                 DecorateRoom(10, roomPal.GetSpecialRoomLayout(0));
@@ -82,7 +98,17 @@ public class LevelController : MonoBehaviour
                 Debug.Log("Level 3");
                 levelName.text = "1st Floor";
                 GenerateFloor(roomCount);
-                //todo insert rooms
+                //Insert rooms
+                /*
+                for(int i = 2; i < roomCount; i++)
+                {
+                    //for non-shops
+                    if((i != 5) && (i != 10))
+                    {
+                        DecorateRoom(i, roomPal.GetRandomHardRoomLayout());
+                    }
+                }
+                */
                 //add 2 shops and staircase
                 DecorateRoom(5, roomPal.GetSpecialRoomLayout(0));
                 DecorateRoom(10, roomPal.GetSpecialRoomLayout(0));
@@ -93,6 +119,7 @@ public class LevelController : MonoBehaviour
                 Debug.Log("Boss 1");
                 levelName.text = "3rd Floor Stairwell";
                 GenerateLineFloor(3);
+                //todo add boss room
                 DecorateRoom(3, roomPal.GetExitRoomLayout(3));
             break;
             //level 2 Boss
@@ -100,6 +127,7 @@ public class LevelController : MonoBehaviour
                 Debug.Log("Boss 2");
                 levelName.text = "2nd Floor Stairwell";
                 GenerateLineFloor(3);
+                //todo add boss room
                 DecorateRoom(3, roomPal.GetExitRoomLayout(4));
             break;
             //level 3 Boss
@@ -107,6 +135,8 @@ public class LevelController : MonoBehaviour
                 Debug.Log("Boss 3");
                 levelName.text = "1st Floor Stairwell";
                 GenerateLineFloor(3);
+                //todo add boss room
+                //todo add win room
             break;
             //tutorial
             case 0:
@@ -356,10 +386,7 @@ public class LevelController : MonoBehaviour
             //activate objects in current room
             center.GetComponentInChildren<RoomLayoutDetails>(true).gameObject.SetActive(true);
             center.GetComponentInChildren<RoomLayoutDetails>(true).SetRoom(center);
-            if(center.GetComponentInChildren<RoomLayoutDetails>(true).numberOfEnemies <= 0)
-            {
-                center.LockDoors(false);
-            }
+            center.GetComponentInChildren<RoomLayoutDetails>(true).Death();
         }
         else
         {
