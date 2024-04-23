@@ -11,7 +11,12 @@ public class Stairs : MonoBehaviour
     [SerializeField] private Image fadeRing;
     [SerializeField] private Image fadeCover;
     [SerializeField] private Text levelName;
-    private bool used = false;
+    private bool used = false;//stop stairs from triggering more than once
+
+    //dialogue
+    [SerializeField] private string[] dialogue;//if there is dialogue between transitions
+    [SerializeField] private Image dialogueBG;
+    [SerializeField] private Text dialogueText;
 
     // Start is called before the first frame update
     void Start()
@@ -46,6 +51,12 @@ public class Stairs : MonoBehaviour
             if(!used)
             {
                 used = true;
+                //todo add dialogue change for alternate ending
+                if(levelToLoad == -3)
+                {
+                    //TODO check ending and add dialogue
+                }
+                //do fade circle animation
                 StartCoroutine("FadeOutAndInAnim");
             }
         }
@@ -54,7 +65,7 @@ public class Stairs : MonoBehaviour
     IEnumerator FadeOutAndInAnim()
     {        
         //disable player movement
-        player.SetMovementCooldown(10000);
+        player.SetMovementCooldown(100000);
         //fade out
         fadeRing.gameObject.SetActive(true);
         fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * 30;
@@ -73,6 +84,76 @@ public class Stairs : MonoBehaviour
         //load next level
         level.ResetFloor();
         level.GenerateFloorForLevel(levelToLoad);
+
+        //if there is dialogue, go through that first
+        if(dialogue.Length > 0)
+        {
+            fadeCover.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            dialogueText.text = "";
+            dialogueBG.gameObject.SetActive(true);
+            //slide in dialogue box
+            dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -300);
+            while(dialogueBG.GetComponent<RectTransform>().anchoredPosition.y < 0)
+            {
+                dialogueBG.GetComponent<RectTransform>().anchoredPosition = dialogueBG.GetComponent<RectTransform>().anchoredPosition + new Vector2(0, 5);
+                yield return new WaitForSeconds(0.0005f);
+            }
+            dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+            yield return new WaitForSeconds(0.2f);
+            //go through dialogue
+            int pointer = 0;
+            while(pointer < dialogue.Length)
+            {
+                //type out the message
+                string toType = dialogue[pointer];
+                string written = "";
+                while((!written.Equals(toType)) && (!Input.anyKey))//while untyped or no keys held
+                {
+                    written = toType.Substring(0, written.Length + 1);
+                    dialogueText.text = written;
+                    yield return new WaitForSeconds(0.05f);
+                    //skip typing
+                    if(Input.anyKeyDown)
+                    {
+                        break;
+                    }
+                    yield return null;
+                }
+                dialogueText.text = dialogue[pointer];
+                //wait for next message
+                while(true)
+                {
+                    if(Input.anyKeyDown)//Input.GetKeyDown("space") || Input.GetKeyDown("return") || Input.GetKeyDown("enter") || Input.GetKeyDown("mouse 0"))
+                    {
+                        pointer++;
+                        yield return new WaitForSeconds(0.0005f);
+                        break;
+                    }
+                    yield return null;
+                }
+                //wait until button released
+                while(true)
+                {
+                    if(!Input.anyKey)
+                    {
+                        break;
+                    }
+                    yield return null;
+                }
+            }
+            //slide out dialogue box
+            dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+            while(dialogueBG.GetComponent<RectTransform>().anchoredPosition.y > -300)
+            {
+                dialogueBG.GetComponent<RectTransform>().anchoredPosition = dialogueBG.GetComponent<RectTransform>().anchoredPosition - new Vector2(0, 5);
+                yield return new WaitForSeconds(0.0005f);
+            }
+            dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -300);
+            dialogueBG.gameObject.SetActive(false);
+            yield return new WaitForSeconds(0.5f);
+        }
+
         //fade in
         fadeCover.gameObject.SetActive(false);
         fadeRing.GetComponent<RectTransform>().localScale = Vector3.one;
@@ -112,7 +193,76 @@ public class Stairs : MonoBehaviour
     IEnumerator FadeInAtStartAnim()
     {  
         //disable player movement
-        player.SetMovementCooldown(10000);
+        player.SetMovementCooldown(100000);
+
+        //if there is dialogue, go through that first
+        if(dialogue.Length > 0)
+        {
+            fadeCover.gameObject.SetActive(true);
+            yield return new WaitForSeconds(0.5f);
+            dialogueText.text = "";
+            dialogueBG.gameObject.SetActive(true);
+            //slide in dialogue box
+            dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -300);
+            while(dialogueBG.GetComponent<RectTransform>().anchoredPosition.y < 0)
+            {
+                dialogueBG.GetComponent<RectTransform>().anchoredPosition = dialogueBG.GetComponent<RectTransform>().anchoredPosition + new Vector2(0, 5);
+                yield return new WaitForSeconds(0.0005f);
+            }
+            dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+            yield return new WaitForSeconds(0.2f);
+            //go through dialogue
+            int pointer = 0;
+            while(pointer < dialogue.Length)
+            {
+                //type out the message
+                string toType = dialogue[pointer];
+                string written = "";
+                while((!written.Equals(toType)) && (!Input.anyKey))//while untyped or no keys held
+                {
+                    written = toType.Substring(0, written.Length + 1);
+                    dialogueText.text = written;
+                    yield return new WaitForSeconds(0.05f);
+                    //skip typing
+                    if(Input.anyKeyDown)
+                    {
+                        break;
+                    }
+                    yield return null;
+                }
+                dialogueText.text = dialogue[pointer];
+                //wait for next message
+                while(true)
+                {
+                    if(Input.anyKeyDown)//Input.GetKeyDown("space") || Input.GetKeyDown("return") || Input.GetKeyDown("enter") || Input.GetKeyDown("mouse 0"))
+                    {
+                        pointer++;
+                        yield return new WaitForSeconds(0.0005f);
+                        break;
+                    }
+                    yield return null;
+                }
+                //wait until button released
+                while(true)
+                {
+                    if(!Input.anyKey)
+                    {
+                        break;
+                    }
+                    yield return null;
+                }
+            }
+            //slide out dialogue box
+            dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
+            while(dialogueBG.GetComponent<RectTransform>().anchoredPosition.y > -300)
+            {
+                dialogueBG.GetComponent<RectTransform>().anchoredPosition = dialogueBG.GetComponent<RectTransform>().anchoredPosition - new Vector2(0, 5);
+                yield return new WaitForSeconds(0.0005f);
+            }
+            dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -300);
+            dialogueBG.gameObject.SetActive(false);
+            yield return new WaitForSeconds(0.5f);
+        }
 
         //fade in
         fadeCover.gameObject.SetActive(false);

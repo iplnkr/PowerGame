@@ -136,7 +136,7 @@ public class LevelController : MonoBehaviour
                 levelName.text = "1st Floor Stairwell";
                 GenerateLineFloor(3);
                 //todo add boss room
-                //todo add win room
+                DecorateRoom(3, roomPal.GetExitRoomLayout(6));
             break;
             //tutorial
             case 0:

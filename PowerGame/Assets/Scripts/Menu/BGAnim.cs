@@ -14,6 +14,6 @@ public class BGAnim : MonoBehaviour
 
     void FixedUpdate()
     {
-        rend.material.SetTextureOffset("_MainTex", new Vector2(Time.timeSinceLevelLoad/2.5f, -Time.timeSinceLevelLoad/4.5f));
+        rend.material.SetTextureOffset("_MainTex", new Vector2(Time.timeSinceLevelLoad/5f, -Time.timeSinceLevelLoad/9f));
     }
 }

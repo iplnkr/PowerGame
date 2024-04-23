@@ -37,6 +37,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private EyeMovement eyeMov;//used for invincibility animation
     [SerializeField] private Image fadeRing;//used for death screen
     [SerializeField] private Image fadeCoverDeath;//used for death screen
+    [SerializeField] private Image winUI;//used for win screen
 
     //money
     [SerializeField] private Text moneyText;
@@ -150,7 +151,6 @@ public class PlayerMovement : MonoBehaviour
             healthText.text = " " + healthCurrent;
             if(healthCurrent <= 0)
             {
-                Debug.Log("Death");//TODO add proper death animation
                 //make immune for a long time (about a day irl?) to avoid retriggering
                 immuneCooldown = 100000;
                 isImmune = true;
@@ -176,7 +176,7 @@ public class PlayerMovement : MonoBehaviour
     {        
         GameObject camPos = FindObjectOfType<Camera>().gameObject;
         //disable player movement
-        SetMovementCooldown(10000);
+        SetMovementCooldown(1000000);
         //fade out
         fadeRing.gameObject.SetActive(true);
         fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * 30;
@@ -189,6 +189,45 @@ public class PlayerMovement : MonoBehaviour
         fadeRing.GetComponent<RectTransform>().localScale = Vector3.one;
         fadeCoverDeath.gameObject.SetActive(true);
         yield return new WaitForSeconds(0.0005f);
+    }
+
+    //function for doing game win animation
+    public void WinGame()
+    {
+        //disable collider
+        GetComponent<Collider2D>().enabled = false;
+        //destroy all nearby enemies
+        Enemy[] ens = FindObjectsOfType<Enemy>();
+        for(int i = ens.Length - 1; i >= 0; i--)
+        {
+            Destroy(ens[i]);
+        }
+        //start fade out animation
+        StartCoroutine("WinAnim");
+    }
+
+    IEnumerator WinAnim()
+    {        
+        GameObject camPos = FindObjectOfType<Camera>().gameObject;
+        Vector3 mid = new Vector3(camPos.transform.position.x, camPos.transform.position.y, -1);
+        //disable player movement
+        SetMovementCooldown(1000000);
+        yield return new WaitForSeconds(0.5f);
+        //player walks to mid
+        while(Vector3.Distance(transform.position, mid) > 0.01f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, mid, 0.01f);
+            yield return new WaitForSeconds(0.005f);
+        }
+        //player walks out
+        mid = new Vector3(mid.x, mid.y - 15, -1);
+        while(Vector3.Distance(transform.position, mid) > 0.01f)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, mid, 0.01f);
+            yield return new WaitForSeconds(0.005f);
+        }
+        //show end message
+        winUI.gameObject.SetActive(true);
     }
 
     public void GainHP(int amt)
