@@ -108,11 +108,18 @@ public class Stairs : MonoBehaviour
                 //type out the message
                 string toType = dialogue[pointer];
                 string written = "";
-                while((!written.Equals(toType)) && (!Input.anyKey))//while untyped or no keys held
+                while(!written.Equals(toType))//while untyped
                 {
                     written = toType.Substring(0, written.Length + 1);
                     dialogueText.text = written;
-                    yield return new WaitForSeconds(0.05f);
+                    if(Input.anyKey)//speed up if key pressed
+                    {
+                        yield return new WaitForSeconds(0.005f);
+                    }
+                    else
+                    {
+                        yield return new WaitForSeconds(0.05f);
+                    }
                     //skip typing
                     if(Input.anyKeyDown)
                     {
@@ -121,22 +128,13 @@ public class Stairs : MonoBehaviour
                     yield return null;
                 }
                 dialogueText.text = dialogue[pointer];
-                //wait for next message
+                //wait until user input for next message
                 while(true)
                 {
-                    if(Input.anyKeyDown)//Input.GetKeyDown("space") || Input.GetKeyDown("return") || Input.GetKeyDown("enter") || Input.GetKeyDown("mouse 0"))
+                    if(Input.anyKeyDown)
                     {
                         pointer++;
                         yield return new WaitForSeconds(0.0005f);
-                        break;
-                    }
-                    yield return null;
-                }
-                //wait until button released
-                while(true)
-                {
-                    if(!Input.anyKey)
-                    {
                         break;
                     }
                     yield return null;
@@ -218,11 +216,18 @@ public class Stairs : MonoBehaviour
                 //type out the message
                 string toType = dialogue[pointer];
                 string written = "";
-                while((!written.Equals(toType)) && (!Input.anyKey))//while untyped or no keys held
+                while(!written.Equals(toType))//while untyped
                 {
                     written = toType.Substring(0, written.Length + 1);
                     dialogueText.text = written;
-                    yield return new WaitForSeconds(0.05f);
+                    if(Input.anyKey)//speed up if key pressed
+                    {
+                        yield return new WaitForSeconds(0.005f);
+                    }
+                    else
+                    {
+                        yield return new WaitForSeconds(0.05f);
+                    }
                     //skip typing
                     if(Input.anyKeyDown)
                     {
@@ -231,22 +236,13 @@ public class Stairs : MonoBehaviour
                     yield return null;
                 }
                 dialogueText.text = dialogue[pointer];
-                //wait for next message
+                //wait until user input for next message
                 while(true)
                 {
-                    if(Input.anyKeyDown)//Input.GetKeyDown("space") || Input.GetKeyDown("return") || Input.GetKeyDown("enter") || Input.GetKeyDown("mouse 0"))
+                    if(Input.anyKeyDown)
                     {
                         pointer++;
                         yield return new WaitForSeconds(0.0005f);
-                        break;
-                    }
-                    yield return null;
-                }
-                //wait until button released
-                while(true)
-                {
-                    if(!Input.anyKey)
-                    {
                         break;
                     }
                     yield return null;

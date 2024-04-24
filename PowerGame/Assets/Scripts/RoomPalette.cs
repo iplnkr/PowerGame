@@ -9,6 +9,7 @@ public class RoomPalette : MonoBehaviour
     [SerializeField] private GameObject[] hardRoomLayouts;//all stored hard room layouts
     [SerializeField] private GameObject[] exitRoomLayouts;//all stored exit room layouts
     [SerializeField] private GameObject[] specialRoomLayouts;//all stored special room layouts
+    [SerializeField] private GameObject[] bossRoomLayouts;//all stored special room layouts
 
     public GameObject GetRandomBasicRoomLayout()
     {
@@ -33,5 +34,10 @@ public class RoomPalette : MonoBehaviour
     public GameObject GetSpecialRoomLayout(int index)
     {
         return specialRoomLayouts[index];
+    }
+
+    public GameObject GetBossRoomLayout(int index)
+    {
+        return bossRoomLayouts[index];
     }
 }

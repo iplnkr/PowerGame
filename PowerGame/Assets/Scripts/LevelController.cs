@@ -119,7 +119,7 @@ public class LevelController : MonoBehaviour
                 Debug.Log("Boss 1");
                 levelName.text = "3rd Floor Stairwell";
                 GenerateLineFloor(3);
-                //todo add boss room
+                DecorateRoom(2, roomPal.GetBossRoomLayout(0));
                 DecorateRoom(3, roomPal.GetExitRoomLayout(3));
             break;
             //level 2 Boss
@@ -127,7 +127,7 @@ public class LevelController : MonoBehaviour
                 Debug.Log("Boss 2");
                 levelName.text = "2nd Floor Stairwell";
                 GenerateLineFloor(3);
-                //todo add boss room
+                DecorateRoom(2, roomPal.GetBossRoomLayout(1));
                 DecorateRoom(3, roomPal.GetExitRoomLayout(4));
             break;
             //level 3 Boss
@@ -135,7 +135,7 @@ public class LevelController : MonoBehaviour
                 Debug.Log("Boss 3");
                 levelName.text = "1st Floor Stairwell";
                 GenerateLineFloor(3);
-                //todo add boss room
+                DecorateRoom(2, roomPal.GetBossRoomLayout(2));
                 DecorateRoom(3, roomPal.GetExitRoomLayout(6));
             break;
             //tutorial

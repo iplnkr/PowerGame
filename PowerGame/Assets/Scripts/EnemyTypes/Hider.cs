@@ -17,11 +17,11 @@ public class Hider : Enemy
         playerObj = FindObjectOfType<PlayerMovement>();
         //set first destination
         walkingTime = 2 + (Random.Range(-10,11)/10f);
-        float newX = Mathf.Max(Mathf.Min(transform.position.x + Random.Range(-2,3), sideLimit), -sideLimit);
-        float newY = Mathf.Max(Mathf.Min(transform.position.y + Random.Range(-2,3), topbottomLimit), -topbottomLimit);
+        float newX = Mathf.Max(Mathf.Min(transform.localPosition.x + Random.Range(-2,3), sideLimit), -sideLimit);
+        float newY = Mathf.Max(Mathf.Min(transform.localPosition.y + Random.Range(-2,3), topbottomLimit), -topbottomLimit);
         strollTarget = new Vector3(newX, newY, -1);
         //set facing direction
-        if(newX - transform.position.x < 0)
+        if(newX - transform.localPosition.x < 0)
         {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
@@ -40,8 +40,8 @@ public class Hider : Enemy
             Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mouseWorldPosition = new Vector3(mouseWorldPosition.x, mouseWorldPosition.y, transform.position.z);
             //compare angle for player to mouse and from player to this enemy
-            Vector3 mouseDir = Vector3.Normalize(mouseWorldPosition - playerObj.transform.position);
-            Vector3 thisDir = Vector3.Normalize(transform.position - playerObj.transform.position);
+            Vector3 mouseDir = Vector3.Normalize(mouseWorldPosition - playerObj.transform.localPosition);
+            Vector3 thisDir = Vector3.Normalize(transform.localPosition - playerObj.transform.localPosition);
             Vector3 angleDif = Vector3.Normalize(mouseDir - thisDir);
             if(Vector3.SignedAngle(mouseDir, thisDir, Vector3.forward) <= 0)
             {
@@ -49,12 +49,12 @@ public class Hider : Enemy
                 mouseDir = new Vector3(mouseDir.y, -mouseDir.x, transform.position.z);
                 //follow escape route, but dont go through objects
                 Vector3 destination = Vector3.Normalize(mouseDir) * 5f * Time.fixedDeltaTime;
-                Vector3 proposedMove = new Vector3(transform.position.x + destination.x * xMult, transform.position.y + destination.y * yMult, transform.position.z);
+                Vector3 proposedMove = new Vector3(transform.localPosition.x + destination.x * xMult, transform.localPosition.y + destination.y * yMult, transform.position.z);
                 //ensure not out of bounds
                 float newX = Mathf.Max(Mathf.Min(proposedMove.x, sideLimit), -sideLimit);
                 float newY = Mathf.Max(Mathf.Min(proposedMove.y, topbottomLimit), -topbottomLimit);
                 //set facing direction
-                if(newX - transform.position.x < 0)
+                if(newX - transform.localPosition.x < 0)
                 {
                     transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
                 }
@@ -63,8 +63,8 @@ public class Hider : Enemy
                     transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
                 }
                 //move
-                transform.position = new Vector3(newX, newY, -1);
-                strollTarget = transform.position;
+                transform.localPosition = new Vector3(newX, newY, -1);
+                strollTarget = transform.localPosition;
             }
             else
             {
@@ -72,12 +72,12 @@ public class Hider : Enemy
                 mouseDir = new Vector3(-mouseDir.y, mouseDir.x, transform.position.z);
                 //follow escape route, but dont go through objects
                 Vector3 destination = Vector3.Normalize(mouseDir) * 5f * Time.fixedDeltaTime;
-                Vector3 proposedMove = new Vector3(transform.position.x + destination.x * xMult, transform.position.y + destination.y * yMult, transform.position.z);
+                Vector3 proposedMove = new Vector3(transform.localPosition.x + destination.x * xMult, transform.localPosition.y + destination.y * yMult, transform.localPosition.z);
                 //ensure not out of bounds
                 float newX = Mathf.Max(Mathf.Min(proposedMove.x, sideLimit), -sideLimit);
                 float newY = Mathf.Max(Mathf.Min(proposedMove.y, topbottomLimit), -topbottomLimit);
                 //set facing direction
-                if(newX - transform.position.x < 0)
+                if(newX - transform.localPosition.x < 0)
                 {
                     transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
                 }
@@ -86,25 +86,25 @@ public class Hider : Enemy
                     transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
                 }
                 //move                
-                transform.position = new Vector3(newX, newY, -1);
-                strollTarget = transform.position;
+                transform.localPosition = new Vector3(newX, newY, -1);
+                strollTarget = transform.localPosition;
             }
         }
         else//when not under torch
         {
             walkingTime = walkingTime - Time.fixedDeltaTime;
             //follow random route, but dont go through objects
-            Vector3 destination = Vector3.Normalize((strollTarget - transform.position) - new Vector3(0,0,(strollTarget - transform.position).z)) * 2.5f * Time.fixedDeltaTime;
-            transform.position = new Vector3(transform.position.x + destination.x * xMult, transform.position.y + destination.y * yMult, transform.position.z);
+            Vector3 destination = Vector3.Normalize((strollTarget - transform.localPosition) - new Vector3(0,0,(strollTarget - transform.localPosition).z)) * 2.5f * Time.fixedDeltaTime;
+            transform.localPosition = new Vector3(transform.localPosition.x + destination.x * xMult, transform.localPosition.y + destination.y * yMult, transform.position.z);
             //if reached or time reached, set next destination
-            if((Vector3.Distance(strollTarget, transform.position) <= 0.1f) || (walkingTime <= 0))
+            if((Vector3.Distance(strollTarget, transform.localPosition) <= 0.1f) || (walkingTime <= 0))
             {
                 walkingTime = 2 + (Random.Range(-10,11)/10f);
-                float newX = Mathf.Max(Mathf.Min(transform.position.x + Random.Range(-2,3), sideLimit), -sideLimit);
-                float newY = Mathf.Max(Mathf.Min(transform.position.y + Random.Range(-2,3), topbottomLimit), -topbottomLimit);
+                float newX = Mathf.Max(Mathf.Min(transform.localPosition.x + Random.Range(-2,3), sideLimit), -sideLimit);
+                float newY = Mathf.Max(Mathf.Min(transform.localPosition.y + Random.Range(-2,3), topbottomLimit), -topbottomLimit);
                 strollTarget = new Vector3(newX, newY, -1);
                 //set facing direction
-                if(newX - transform.position.x < 0)
+                if(newX - transform.localPosition.x < 0)
                 {
                     transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
                 }
@@ -121,8 +121,8 @@ public class Hider : Enemy
         //dont block on collision with torch, enemies and collectables
         if(!col.isTrigger)
         {
-            Vector3 colDir = Vector3.Normalize(col.transform.position - transform.position);
-            Vector3 movDir = Vector3.Normalize(strollTarget - transform.position);
+            Vector3 colDir = Vector3.Normalize(col.transform.localPosition - transform.localPosition);
+            Vector3 movDir = Vector3.Normalize(strollTarget - transform.localPosition);
             Vector3 angleDif = Vector3.Normalize(colDir - movDir);
             //block direction based on collision
             if(Mathf.Abs(angleDif.x) <= Mathf.Abs(angleDif.y))

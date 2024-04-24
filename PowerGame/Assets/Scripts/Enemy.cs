@@ -52,9 +52,12 @@ public class Enemy : MonoBehaviour
             {
                 currentHealth = 0;
                 //drop a coin and destroy enemy
-                loot.transform.parent = transform.parent;
-                loot.transform.localScale = new Vector3(Mathf.Abs(loot.transform.localScale.x), Mathf.Abs(loot.transform.localScale.y), Mathf.Abs(loot.transform.localScale.z));
-                loot.SetActive(true);
+                if(loot != null)
+                {
+                    loot.transform.parent = transform.parent;
+                    loot.transform.localScale = new Vector3(Mathf.Abs(loot.transform.localScale.x), Mathf.Abs(loot.transform.localScale.y), Mathf.Abs(loot.transform.localScale.z));
+                    loot.SetActive(true);
+                }
                 if(roomImIn != null)
                 {
                     roomImIn.Death();
