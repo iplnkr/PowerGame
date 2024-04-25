@@ -36,8 +36,11 @@ public class RoomLayoutDetails : MonoBehaviour
     public void Death()
     {
         DoubleCheck();
-        //check again in a second to avoid bug of when multiple enemies killed simulataneously
-        Invoke("DoubleCheck", 1);
+        if(numberOfEnemies > 0)
+        {
+            //check again in a second to avoid bug of when multiple enemies killed simulataneously
+            Invoke("DoubleCheck", 1);
+        }
     }
 
     private void DoubleCheck()

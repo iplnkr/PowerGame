@@ -194,6 +194,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3333482327073746417}
   - component: {fileID: 3333482327073746416}
+  - component: {fileID: 1289037001158054277}
   m_Layer: 0
   m_Name: Healthbar
   m_TagString: Untagged
@@ -267,6 +268,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1289037001158054277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3333482327073746422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66bf9dc9a77a41f48bbb0285dc1b0884, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3333482327748933239
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,6 +431,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &4648834804679930277
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4049079055487972549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66bf9dc9a77a41f48bbb0285dc1b0884, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &333414342071984795
 PrefabInstance:
   m_ObjectHideFlags: 0

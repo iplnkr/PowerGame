@@ -54,10 +54,8 @@ public class LevelController : MonoBehaviour
         {
             //level 1
             case 1:
-                Debug.Log("Level 1");
                 levelName.text = "3rd Floor";
                 GenerateFloor(roomCount);
-                //DecorateRoom(2, roomPal.GetRandomBasicRoomLayout());//temp todo remove
                 //Insert rooms
                 for(int i = 2; i < roomCount; i++)
                 {
@@ -74,11 +72,9 @@ public class LevelController : MonoBehaviour
             break;
             //level 2
             case 2:
-                Debug.Log("Level 2");
                 levelName.text = "2nd Floor";
                 GenerateFloor(roomCount);
                 //Insert rooms
-                /*
                 for(int i = 2; i < roomCount; i++)
                 {
                     //for non-shops
@@ -87,7 +83,6 @@ public class LevelController : MonoBehaviour
                         DecorateRoom(i, roomPal.GetRandomMediumRoomLayout());
                     }
                 }
-                */
                 //add 2 shops and staircase
                 DecorateRoom(5, roomPal.GetSpecialRoomLayout(0));
                 DecorateRoom(10, roomPal.GetSpecialRoomLayout(0));
@@ -95,11 +90,9 @@ public class LevelController : MonoBehaviour
             break;
             //level 3
             case 3:
-                Debug.Log("Level 3");
                 levelName.text = "1st Floor";
                 GenerateFloor(roomCount);
                 //Insert rooms
-                /*
                 for(int i = 2; i < roomCount; i++)
                 {
                     //for non-shops
@@ -108,7 +101,6 @@ public class LevelController : MonoBehaviour
                         DecorateRoom(i, roomPal.GetRandomHardRoomLayout());
                     }
                 }
-                */
                 //add 2 shops and staircase
                 DecorateRoom(5, roomPal.GetSpecialRoomLayout(0));
                 DecorateRoom(10, roomPal.GetSpecialRoomLayout(0));
@@ -116,7 +108,6 @@ public class LevelController : MonoBehaviour
             break;
             //level 1 Boss
             case -1:
-                Debug.Log("Boss 1");
                 levelName.text = "3rd Floor Stairwell";
                 GenerateLineFloor(3);
                 DecorateRoom(2, roomPal.GetBossRoomLayout(0));
@@ -124,7 +115,6 @@ public class LevelController : MonoBehaviour
             break;
             //level 2 Boss
             case -2:
-                Debug.Log("Boss 2");
                 levelName.text = "2nd Floor Stairwell";
                 GenerateLineFloor(3);
                 DecorateRoom(2, roomPal.GetBossRoomLayout(1));
@@ -132,7 +122,6 @@ public class LevelController : MonoBehaviour
             break;
             //level 3 Boss
             case -3:
-                Debug.Log("Boss 3");
                 levelName.text = "1st Floor Stairwell";
                 GenerateLineFloor(3);
                 DecorateRoom(2, roomPal.GetBossRoomLayout(2));
@@ -140,7 +129,6 @@ public class LevelController : MonoBehaviour
             break;
             //tutorial
             case 0:
-                Debug.Log("Tutorial");
                 levelName.text = "Your Room";
                 GenerateLineFloor(3);
                 DecorateRoom(1, roomPal.GetSpecialRoomLayout(1));

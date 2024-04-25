@@ -16,6 +16,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected GameObject lightSelf;//the masked version of the character
     private bool smokeCopyMade = false;
     private bool dealsDamage = true;
+    private bool deadNow = false;//used to avoid running death functions more than once
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,16 @@ public class Enemy : MonoBehaviour
         currentHealth = maxHealth;
         if(roomImIn == null)
         {
-            roomImIn = FindObjectOfType<RoomLayoutDetails>();
+            //TODO, if bug apears, check this
+            //tries to assign current room layout to parent
+            if(transform.parent.GetComponent<RoomLayoutDetails>() != null)
+            {
+                roomImIn = transform.parent.GetComponent<RoomLayoutDetails>();
+            }
+            else
+            {
+                roomImIn = FindObjectOfType<RoomLayoutDetails>();
+            }
         }
         StartAddOn();
         Invoke("StartActivity", 1.25f);
@@ -51,54 +61,58 @@ public class Enemy : MonoBehaviour
             if(currentHealth < 0)
             {
                 currentHealth = 0;
-                //drop a coin and destroy enemy
-                if(loot != null)
+                if(!deadNow)
                 {
-                    loot.transform.parent = transform.parent;
-                    loot.transform.localScale = new Vector3(Mathf.Abs(loot.transform.localScale.x), Mathf.Abs(loot.transform.localScale.y), Mathf.Abs(loot.transform.localScale.z));
-                    loot.SetActive(true);
-                }
-                if(roomImIn != null)
-                {
-                    roomImIn.Death();
-                }
-                //if has death animation, do it
-                if(GetComponent<Animator>() != null)
-                {
-                    if((GetComponent<Animator>().HasState(0, Animator.StringToHash("Base Layer.SmokeAndDie"))) && (lightSelf.GetComponent<Animator>().HasState(0, Animator.StringToHash("Base Layer.Smoke"))))
+                    deadNow = true;
+                    //drop a coin and destroy enemy
+                    if(loot != null)
                     {
-                        GetComponent<SpriteRenderer>().color = new Color(0.3333333f, 0.3333333f, 0.3333333f, 1);
-                        lightSelf.GetComponent<Animator>().Play("Base Layer.Smoke");
-                        GetComponent<Animator>().Play("Base Layer.SmokeAndDie");
+                        loot.transform.parent = transform.parent;
+                        loot.transform.localScale = new Vector3(Mathf.Abs(loot.transform.localScale.x), Mathf.Abs(loot.transform.localScale.y), Mathf.Abs(loot.transform.localScale.z));
+                        loot.SetActive(true);
                     }
-                }
-                else//otherwise create a copy of the death animation to use
-                {
-                    //smoke for death animation of enemies that dont use an animator
-                    //spare smoke backup is stored as first grandchild of palette
-                    GameObject spareSmoke = FindObjectOfType<RoomPalette>().transform.GetChild(0).transform.GetChild(0).gameObject;
-                    if(!smokeCopyMade)
+                    if(roomImIn != null)
                     {
-                        smokeCopyMade = true;
-                        GameObject deathSmoke = Instantiate(spareSmoke);
-                        deathSmoke.transform.parent = transform;
-                        deathSmoke.transform.localPosition = new Vector3(0, 0, -1);
-                        deathSmoke.SetActive(true);
-                        deathSmoke.transform.parent = null;
-                        if(deathSmoke.GetComponent<Animator>() != null)
+                        roomImIn.Death();
+                    }
+                    //if has death animation, do it
+                    if(GetComponent<Animator>() != null)
+                    {
+                        if((GetComponent<Animator>().HasState(0, Animator.StringToHash("Base Layer.SmokeAndDie"))) && (lightSelf.GetComponent<Animator>().HasState(0, Animator.StringToHash("Base Layer.Smoke"))))
                         {
-                            if((deathSmoke.GetComponent<Animator>().HasState(0, Animator.StringToHash("Base Layer.Smoke"))) && (deathSmoke.transform.GetChild(0).GetComponent<Animator>().HasState(0, Animator.StringToHash("Base Layer.Smoke"))))
+                            GetComponent<SpriteRenderer>().color = new Color(0.3333333f, 0.3333333f, 0.3333333f, 1);
+                            lightSelf.GetComponent<Animator>().Play("Base Layer.Smoke");
+                            GetComponent<Animator>().Play("Base Layer.SmokeAndDie");
+                        }
+                    }
+                    else//otherwise create a copy of the death animation to use
+                    {
+                        //smoke for death animation of enemies that dont use an animator
+                        //spare smoke backup is stored as first grandchild of palette
+                        GameObject spareSmoke = FindObjectOfType<RoomPalette>().transform.GetChild(0).transform.GetChild(0).gameObject;
+                        if(!smokeCopyMade)
+                        {
+                            smokeCopyMade = true;
+                            GameObject deathSmoke = Instantiate(spareSmoke);
+                            deathSmoke.transform.parent = transform;
+                            deathSmoke.transform.localPosition = new Vector3(0, 0, -1);
+                            deathSmoke.SetActive(true);
+                            deathSmoke.transform.parent = null;
+                            if(deathSmoke.GetComponent<Animator>() != null)
                             {
-                                deathSmoke.GetComponent<Animator>().Play("Base Layer.Smoke");
-                                deathSmoke.transform.GetChild(0).GetComponent<Animator>().Play("Base Layer.Smoke");
-                                SelfDestruct();
+                                if((deathSmoke.GetComponent<Animator>().HasState(0, Animator.StringToHash("Base Layer.Smoke"))) && (deathSmoke.transform.GetChild(0).GetComponent<Animator>().HasState(0, Animator.StringToHash("Base Layer.Smoke"))))
+                                {
+                                    deathSmoke.GetComponent<Animator>().Play("Base Layer.Smoke");
+                                    deathSmoke.transform.GetChild(0).GetComponent<Animator>().Play("Base Layer.Smoke");
+                                    SelfDestruct();
+                                }
                             }
                         }
                     }
+                    startedMoving = false;
+                    dealsDamage = false;
+                    //SelfDestruct();
                 }
-                startedMoving = false;
-                dealsDamage = false;
-                //SelfDestruct();
             }
             healthDisplay.transform.parent.gameObject.SetActive(true);
             healthDisplay.SetActive(true);

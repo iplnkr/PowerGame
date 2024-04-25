@@ -18,12 +18,12 @@ public class RoomPalette : MonoBehaviour
 
     public GameObject GetRandomMediumRoomLayout()
     {
-        return basicRoomLayouts[Random.Range(0, mediumRoomLayouts.Length)];
+        return mediumRoomLayouts[Random.Range(0, mediumRoomLayouts.Length)];
     }
 
     public GameObject GetRandomHardRoomLayout()
     {
-        return basicRoomLayouts[Random.Range(0, hardRoomLayouts.Length)];
+        return hardRoomLayouts[Random.Range(0, hardRoomLayouts.Length)];
     }
 
     public GameObject GetExitRoomLayout(int index)

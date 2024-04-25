@@ -502,7 +502,7 @@ GameObject:
   - component: {fileID: 4906001507189055491}
   - component: {fileID: 4906001507189055492}
   - component: {fileID: 4906001507189055499}
-  - component: {fileID: 4906001507189055489}
+  - component: {fileID: 110690137750125731}
   m_Layer: 0
   m_Name: RodentKing
   m_TagString: Untagged
@@ -602,8 +602,8 @@ MonoBehaviour:
   lightSelf: {fileID: 0}
   bat: {fileID: 5615142899625144797}
   rat: {fileID: 7760517500132063473}
---- !u!61 &4906001507189055489
-BoxCollider2D:
+--- !u!60 &110690137750125731
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -625,9 +625,16 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: -0.43299568, y: 1.2102456}
+      - {x: -0.9394498, y: 0.045227766}
+      - {x: -0.3448937, y: -0.6520798}
+      - {x: -0.23198295, y: -1.3174524}
+      - {x: 0.24538368, y: -1.3174524}
+      - {x: 0.34612167, y: -0.6076739}
+      - {x: 0.89852214, y: -0.07240224}
+      - {x: 0.47319824, y: 1.1968446}
 --- !u!1 &5242655410587893811
 GameObject:
   m_ObjectHideFlags: 0

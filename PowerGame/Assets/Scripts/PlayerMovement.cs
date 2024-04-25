@@ -89,6 +89,15 @@ public class PlayerMovement : MonoBehaviour
                     batteryPercent = batteryMax;
                 }
             }
+
+            //cheat code for healing
+            if((Input.GetKey(",")) && ((Input.GetKey("left shift")) || (Input.GetKey("right shift"))))
+            {
+                if(Input.GetKeyDown("3"))
+                {
+                    GainHP(1);
+                }
+            }
         }
         else
         {

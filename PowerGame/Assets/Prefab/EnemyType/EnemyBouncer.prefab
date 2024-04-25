@@ -1,5 +1,17 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &1942879357439891746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6950099118823217871}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66bf9dc9a77a41f48bbb0285dc1b0884, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8652410086112766618
 GameObject:
   m_ObjectHideFlags: 0
@@ -10,6 +22,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8652410086112766621}
   - component: {fileID: 8652410086112766620}
+  - component: {fileID: 8984291516469369678}
   m_Layer: 0
   m_Name: Healthbar
   m_TagString: Untagged
@@ -83,6 +96,18 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &8984291516469369678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8652410086112766618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66bf9dc9a77a41f48bbb0285dc1b0884, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8652410086462314966
 GameObject:
   m_ObjectHideFlags: 0
