@@ -595,7 +595,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d868a457c32b9614b8c6844a72ca2293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 70
+  maxHealth: 90
   healthDisplay: {fileID: 4906001506661861576}
   roomImIn: {fileID: 0}
   loot: {fileID: 3890960090699766200}

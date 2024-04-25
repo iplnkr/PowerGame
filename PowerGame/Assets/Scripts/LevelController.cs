@@ -134,9 +134,6 @@ public class LevelController : MonoBehaviour
                 DecorateRoom(1, roomPal.GetSpecialRoomLayout(1));
                 DecorateRoom(2, roomPal.GetSpecialRoomLayout(2));
                 DecorateRoom(3, roomPal.GetExitRoomLayout(5));
-                
-                //FindObjectOfType<Stairs>(true).gameObject.transform.parent.parent.gameObject.SetActive(true);
-                //FindObjectOfType<Stairs>(true).gameObject.transform.parent.gameObject.SetActive(true);
                 FindObjectOfType<Stairs>().PlayStartAnim();
             break;
         }

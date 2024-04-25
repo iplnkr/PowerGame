@@ -12,11 +12,18 @@ public class RodentKing : Enemy
     private float spawningcooldown = 1f;
     [SerializeField] private GameObject bat;
     [SerializeField] private GameObject rat;
+    [SerializeField] private GameObject doomService;
     private int spawnCounter = 0;
+    private float speed = 1f;
 
     public override void StartAddOn()
     {
         playerObj = FindObjectOfType<PlayerMovement>();
+        //if player on evil room service route, activate room service
+        if(playerObj.GetEvil())
+        {
+            doomService.SetActive(true);
+        }
     }
 
     public override void FixedUpdateAddOn()
@@ -28,14 +35,22 @@ public class RodentKing : Enemy
             //how to move when under torch
             if(toBurn)
             {
-                //stay still under torch
+                //slow movement under torch, but faster spawns
+                speed = 0.25f;
+                spawningcooldown = spawningcooldown - Time.fixedDeltaTime;
+            }
+            else if(toHeal)//how to move when healing
+            {
+                speed = 1f;
+                spawningcooldown = spawningcooldown + (Time.fixedDeltaTime / 3f);//slow down spawn to 2/3 speed of normal rate
             }
             else
             {
-                //follow player, but dont go through objects
-                Vector3 destination = Vector3.Normalize((playerObj.transform.position - transform.position) - new Vector3(0,0,(playerObj.transform.position - transform.position).z)) * 1f * Time.fixedDeltaTime;
-                transform.position = new Vector3(transform.position.x + destination.x * xMult, transform.position.y + destination.y * yMult, transform.position.z);
+                speed = 1f;
             }
+            //follow player, but dont go through objects
+            Vector3 destination = Vector3.Normalize((playerObj.transform.position - transform.position) - new Vector3(0,0,(playerObj.transform.position - transform.position).z)) * speed * Time.fixedDeltaTime;
+            transform.position = new Vector3(transform.position.x + destination.x, transform.position.y + destination.y, transform.position.z);
         }
         if(toDamagePlayer)
         {
@@ -60,34 +75,5 @@ public class RodentKing : Enemy
             newMinion.SetActive(true);
         }
     }
-
-    public override void OnTriggerEnter2DAddOn(Collider2D col)
-    {
-        //dont block on collision with torch, enemies and collectables
-        if(!col.isTrigger)
-        {
-            Vector3 colDir = Vector3.Normalize(col.transform.position - transform.position);
-            Vector3 movDir = Vector3.Normalize(playerObj.transform.position - transform.position);
-            Vector3 angleDif = Vector3.Normalize(colDir - movDir);
-            //block direction based on collision
-            if(Mathf.Abs(angleDif.x) <= Mathf.Abs(angleDif.y))
-            {
-                xMult = 0;
-            }
-            if(Mathf.Abs(angleDif.y) <= Mathf.Abs(angleDif.x))
-            {
-                yMult = 0;
-            }
-        }
-    }
-
-    public override void OnTriggerExit2DAddOn(Collider2D col)
-    {
-        //dont block on collision with torch, enemies and collectables
-        if(!col.isTrigger)
-        {
-            xMult = 1;
-            yMult = 1;
-        }
-    }
+    
 }

@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     protected float currentHealth;
     [SerializeField] private GameObject healthDisplay;
     protected bool toBurn = false;
+    protected bool toHeal = false;
     protected bool toDamagePlayer = false;
     private PlayerMovement playerX;
     [SerializeField] protected RoomLayoutDetails roomImIn;
@@ -54,6 +55,17 @@ public class Enemy : MonoBehaviour
 
     void FixedUpdate()
     {
+        //recieve healing
+        if(toHeal)
+        {
+            currentHealth = currentHealth + (1.0f * Time.fixedDeltaTime);
+            if(currentHealth > maxHealth)
+            {
+                currentHealth = maxHealth;
+            }
+            healthDisplay.transform.localScale = new Vector3(currentHealth/maxHealth, 1, 1);
+            healthDisplay.transform.localPosition = new Vector3(-(1-(currentHealth/maxHealth))/2f, 0, 0);
+        }
         //take damage
         if(toBurn)
         {
@@ -153,6 +165,11 @@ public class Enemy : MonoBehaviour
         {
             toBurn = true;
         }
+        //if heal
+        if(col.name.Equals("TorchAntiLight"))
+        {
+            toHeal = true;
+        }
         //if hit player, deal damage
         if(col.GetComponent<PlayerMovement>() != null)
         {
@@ -179,6 +196,10 @@ public class Enemy : MonoBehaviour
         {
             toBurn = false;
         }
+        if(col.name.Equals("TorchAntiLight"))
+        {
+            toHeal = false;
+        }
         if(col.GetComponent<PlayerMovement>() != null)
         {
             toDamagePlayer = false;
@@ -195,5 +216,10 @@ public class Enemy : MonoBehaviour
     public virtual void OnTriggerExit2DAddOn(Collider2D col)
     {
 
+    }
+
+    public float GetHealthPercent()
+    {
+        return(currentHealth/maxHealth);
     }
 }

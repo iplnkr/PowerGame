@@ -43,6 +43,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private Text moneyText;
     private float moneyCurrent = 0;
 
+    //room service
+    [SerializeField] private GameObject roomService;
+    private bool isEvil = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -98,6 +102,38 @@ public class PlayerMovement : MonoBehaviour
                     GainHP(1);
                 }
             }
+
+            //room service summoning
+            if(Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                if(roomService.GetComponent<RoomService>() != null)
+                {
+                    if(roomService.GetComponent<RoomService>().CanSummon())
+                    {             
+                        roomService.SetActive(true);           
+                        roomService.GetComponent<RoomService>().SummonMe();
+                    }
+                }
+            }
+
+            //room service tipping
+            if(Input.GetKeyDown("space"))
+            {
+                if(CanLoseGold(1))
+                {
+                    if(roomService.GetComponent<RoomService>() != null)
+                    {
+                        if(roomService.GetComponent<RoomService>().CanTip())
+                        {             
+                            if(Vector3.Distance(transform.position, roomService.transform.position) <= 2)  
+                            {
+                                LoseGold(1);   
+                                roomService.GetComponent<RoomService>().TipMe();
+                            }
+                        }
+                    }
+                }
+            }
         }
         else
         {
@@ -149,6 +185,11 @@ public class PlayerMovement : MonoBehaviour
     public void SetMovementCooldown(float tim)
     {
         movementCooldown = tim;
+        //reset room service also
+        if(roomService.GetComponent<RoomService>() != null)
+        {
+            roomService.GetComponent<RoomService>().Vanish();
+        }
     }
 
 
@@ -265,5 +306,16 @@ public class PlayerMovement : MonoBehaviour
     {
         moneyCurrent = moneyCurrent - amt;
         moneyText.text = " " + moneyCurrent;
+    }
+
+    //makes npc evil
+    public void ActivateEvil()
+    {
+        isEvil = true;
+    }
+
+    public bool GetEvil()
+    {
+        return(isEvil);
     }
 }

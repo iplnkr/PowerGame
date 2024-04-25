@@ -17,6 +17,7 @@ public class Stairs : MonoBehaviour
     [SerializeField] private string[] dialogue;//if there is dialogue between transitions
     [SerializeField] private Image dialogueBG;
     [SerializeField] private Text dialogueText;
+    [SerializeField] private RoomService roomServiceGuy;
 
     // Start is called before the first frame update
     void Start()
@@ -51,10 +52,32 @@ public class Stairs : MonoBehaviour
             if(!used)
             {
                 used = true;
-                //todo add dialogue change for alternate ending
+                //add dialogue change for alternate ending
                 if(levelToLoad == -3)
                 {
-                    //TODO check ending and add dialogue
+                    //check ending
+                    if(roomServiceGuy != null)
+                    {
+                        if(roomServiceGuy.ShouldGoEvil())
+                        {
+                            player.ActivateEvil();
+                            //make room service unsummonable
+                            roomServiceGuy.GoEvil();
+                            //add new dialogue
+                            string[] dialogueAddOn = {"But you won't be getting much further I'm afraid...", "I will stop you...", "Because I don't think you deserve to be considered the hero...", "A real hero wouldn't tip so poorly..."};
+                            //create merged array
+                            string[] newDialogue = new string[dialogueAddOn.Length + dialogue.Length];
+                            for(int i = 0; i < dialogue.Length; i++)
+                            {
+                                newDialogue[i] = dialogue[i];
+                            }
+                            for(int i = 0; i < dialogueAddOn.Length; i++)
+                            {
+                                newDialogue[dialogue.Length + i] = dialogueAddOn[i];
+                            }
+                            dialogue = newDialogue;
+                        }
+                    }
                 }
                 //do fade circle animation
                 StartCoroutine("FadeOutAndInAnim");
