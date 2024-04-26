@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     private bool smokeCopyMade = false;
     private bool dealsDamage = true;
     private bool deadNow = false;//used to avoid running death functions more than once
+    [SerializeField] private AudioSource smokeSound;
 
     // Start is called before the first frame update
     void Start()
@@ -95,6 +96,21 @@ public class Enemy : MonoBehaviour
                             GetComponent<SpriteRenderer>().color = new Color(0.3333333f, 0.3333333f, 0.3333333f, 1);
                             lightSelf.GetComponent<Animator>().Play("Base Layer.Smoke");
                             GetComponent<Animator>().Play("Base Layer.SmokeAndDie");
+                            //play smoke sound
+                            if(smokeSound != null)
+                            {
+                                //create a temporary object to play sound
+                                GameObject audioHolder = new GameObject();
+                                audioHolder.transform.position = transform.position;
+                                audioHolder.transform.parent = null;
+                                audioHolder.AddComponent<AudioSource>();
+                                AudioSource audSou = audioHolder.GetComponent<AudioSource>();
+                                audSou.clip = smokeSound.clip;
+                                audSou.playOnAwake = false;
+                                audSou.volume = 0.5f;
+                                audSou.Play();
+                                Destroy(audioHolder, 5);
+                            }
                         }
                     }
                     else//otherwise create a copy of the death animation to use
@@ -114,6 +130,21 @@ public class Enemy : MonoBehaviour
                             {
                                 if((deathSmoke.GetComponent<Animator>().HasState(0, Animator.StringToHash("Base Layer.Smoke"))) && (deathSmoke.transform.GetChild(0).GetComponent<Animator>().HasState(0, Animator.StringToHash("Base Layer.Smoke"))))
                                 {
+                                    //play smoke sound
+                                    if(smokeSound != null)
+                                    {
+                                        //create a temporary object to play sound
+                                        GameObject audioHolder = new GameObject();
+                                        audioHolder.transform.position = transform.position;
+                                        audioHolder.transform.parent = null;
+                                        audioHolder.AddComponent<AudioSource>();
+                                        AudioSource audSou = audioHolder.GetComponent<AudioSource>();
+                                        audSou.clip = smokeSound.clip;
+                                        audSou.playOnAwake = false;
+                                        audSou.volume = 0.5f;
+                                        audSou.Play();
+                                        Destroy(audioHolder, 5);
+                                    }
                                     deathSmoke.GetComponent<Animator>().Play("Base Layer.Smoke");
                                     deathSmoke.transform.GetChild(0).GetComponent<Animator>().Play("Base Layer.Smoke");
                                     SelfDestruct();

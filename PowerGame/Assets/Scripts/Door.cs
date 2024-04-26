@@ -15,12 +15,8 @@ public class Door : MonoBehaviour
     //animations
     [SerializeField] private Animator animDark;
     [SerializeField] private Animator animLight;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private AudioSource doorCloseSound;
+    [SerializeField] private AudioSource doorOpenSound;
 
     void FixedUpdate()
     {
@@ -76,6 +72,28 @@ public class Door : MonoBehaviour
     //play door shutting sound
     public void ShutDoorSound()
     {
-        //TODO play door shutting sound
+        if(doorCloseSound != null)
+        {
+            doorCloseSound.Play();
+            DeeJay dj = FindObjectOfType<DeeJay>();
+            if(dj != null)
+            {
+                dj.EnterCombat();
+            }
+        }
+    }
+
+    //play door opening sound
+    public void OpenDoorSound()
+    {
+        if(doorOpenSound != null)
+        {
+            doorOpenSound.Play();
+            DeeJay dj = FindObjectOfType<DeeJay>();
+            if(dj != null)
+            {
+                dj.ExitCombat();
+            }
+        }
     }
 }

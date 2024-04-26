@@ -21,6 +21,13 @@ public class LoadLevel : MonoBehaviour
 
     public void BuildingBlackout()
     {
+        //play blackout audio
+        DeeJay dj = FindObjectOfType<DeeJay>();
+        if(dj != null)
+        {
+            dj.PlayShutdown();
+        }
+        //
         building.Play("Base Layer.HouseBlackout");
         logo.SetActive(false);
         button.SetActive(false);

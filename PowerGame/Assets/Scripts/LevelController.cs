@@ -413,10 +413,4 @@ public class LevelController : MonoBehaviour
         }
         player.GetComponent<BoxCollider2D>().enabled = true;
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

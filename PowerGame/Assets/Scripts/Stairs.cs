@@ -19,17 +19,11 @@ public class Stairs : MonoBehaviour
     [SerializeField] private Text dialogueText;
     [SerializeField] private RoomService roomServiceGuy;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //audio
+    [SerializeField] private AudioSource fadeInSound;
+    [SerializeField] private AudioSource fadeOutSound;
+    [SerializeField] private AudioSource clickSound;
+    [SerializeField] private AudioSource callSound;
 
     void OnDisable()
     {        
@@ -64,7 +58,7 @@ public class Stairs : MonoBehaviour
                             //make room service unsummonable
                             roomServiceGuy.GoEvil();
                             //add new dialogue
-                            string[] dialogueAddOn = {"But you won't be getting much further I'm afraid...", "I will stop you...", "Because I don't think you deserve to be considered the hero...", "A real hero wouldn't tip so poorly..."};
+                            string[] dialogueAddOn = {"But you won't be getting much further I'm afraid...", "I will stop you...", "Because you don't deserve to be considered a hero...", "A real hero wouldn't tip so poorly..."};
                             //create merged array
                             string[] newDialogue = new string[dialogueAddOn.Length + dialogue.Length];
                             for(int i = 0; i < dialogue.Length; i++)
@@ -90,18 +84,24 @@ public class Stairs : MonoBehaviour
         //disable player movement
         player.SetMovementCooldown(100000);
         //fade out
+        if(fadeOutSound != null)
+        {
+            fadeOutSound.Play();
+        }
         fadeRing.gameObject.SetActive(true);
         fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * 30;
         while(fadeRing.GetComponent<RectTransform>().localScale.x > 1)
         {
-            fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * (fadeRing.GetComponent<RectTransform>().localScale.x - 0.1f);
+            fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * (fadeRing.GetComponent<RectTransform>().localScale.x - 0.5f);
             //also move player towards stairs centre
-            player.transform.position = Vector3.MoveTowards(player.transform.position, new Vector3(transform.position.x, transform.position.y, -1), 0.01f);
-            yield return new WaitForSeconds(0.0005f);
+            player.transform.position = Vector3.MoveTowards(player.transform.position, new Vector3(transform.position.x, transform.position.y, -1), 0.05f);
+            //yield return new WaitForSeconds(0.0005f);
+            yield return new WaitForFixedUpdate();
         }
         fadeRing.GetComponent<RectTransform>().localScale = Vector3.one;
         fadeCover.gameObject.SetActive(true);
-        yield return new WaitForSeconds(0.0005f);
+        //yield return new WaitForSeconds(0.0005f);
+        yield return new WaitForFixedUpdate();
         //detach this object so it isnt destroyed on loading
         transform.parent = null;
         //load next level
@@ -111,19 +111,25 @@ public class Stairs : MonoBehaviour
         //if there is dialogue, go through that first
         if(dialogue.Length > 0)
         {
+            //play call sound
+            if(callSound != null)
+            {
+                callSound.Play();
+            }
             fadeCover.gameObject.SetActive(true);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSecondsRealtime(0.5f);
             dialogueText.text = "";
             dialogueBG.gameObject.SetActive(true);
             //slide in dialogue box
             dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -300);
             while(dialogueBG.GetComponent<RectTransform>().anchoredPosition.y < 0)
             {
-                dialogueBG.GetComponent<RectTransform>().anchoredPosition = dialogueBG.GetComponent<RectTransform>().anchoredPosition + new Vector2(0, 5);
-                yield return new WaitForSeconds(0.0005f);
+                dialogueBG.GetComponent<RectTransform>().anchoredPosition = dialogueBG.GetComponent<RectTransform>().anchoredPosition + new Vector2(0, 25);
+                //yield return new WaitForSeconds(0.0005f);
+                yield return new WaitForFixedUpdate();
             }
             dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSecondsRealtime(0.2f);
             //go through dialogue
             int pointer = 0;
             while(pointer < dialogue.Length)
@@ -135,13 +141,18 @@ public class Stairs : MonoBehaviour
                 {
                     written = toType.Substring(0, written.Length + 1);
                     dialogueText.text = written;
+                    if(clickSound != null)
+                    {
+                        clickSound.Play();
+                    }
                     if(Input.anyKey)//speed up if key pressed
                     {
-                        yield return new WaitForSeconds(0.005f);
+                        //yield return new WaitForSeconds(0.005f);
+                        yield return new WaitForFixedUpdate();
                     }
                     else
                     {
-                        yield return new WaitForSeconds(0.05f);
+                        yield return new WaitForSecondsRealtime(0.05f);
                     }
                     //skip typing
                     if(Input.anyKeyDown)
@@ -157,7 +168,8 @@ public class Stairs : MonoBehaviour
                     if(Input.anyKeyDown)
                     {
                         pointer++;
-                        yield return new WaitForSeconds(0.0005f);
+                        //yield return new WaitForSeconds(0.0005f);
+                        yield return new WaitForFixedUpdate();
                         break;
                     }
                     yield return null;
@@ -167,21 +179,27 @@ public class Stairs : MonoBehaviour
             dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
             while(dialogueBG.GetComponent<RectTransform>().anchoredPosition.y > -300)
             {
-                dialogueBG.GetComponent<RectTransform>().anchoredPosition = dialogueBG.GetComponent<RectTransform>().anchoredPosition - new Vector2(0, 5);
-                yield return new WaitForSeconds(0.0005f);
+                dialogueBG.GetComponent<RectTransform>().anchoredPosition = dialogueBG.GetComponent<RectTransform>().anchoredPosition - new Vector2(0, 25);
+                //yield return new WaitForSeconds(0.0005f);
+                yield return new WaitForFixedUpdate();
             }
             dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -300);
             dialogueBG.gameObject.SetActive(false);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSecondsRealtime(0.5f);
         }
 
         //fade in
+        if(fadeInSound != null)
+        {
+            fadeInSound.Play();
+        }
         fadeCover.gameObject.SetActive(false);
         fadeRing.GetComponent<RectTransform>().localScale = Vector3.one;
         while(fadeRing.GetComponent<RectTransform>().localScale.x < 30)
         {
-            fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * (fadeRing.GetComponent<RectTransform>().localScale.x + 0.1f);
-            yield return new WaitForSeconds(0.0005f);
+            fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * (fadeRing.GetComponent<RectTransform>().localScale.x + 0.5f);
+            //yield return new WaitForSeconds(0.0005f);
+            yield return new WaitForFixedUpdate();
         }
         fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * 30;
         fadeRing.gameObject.SetActive(false);
@@ -195,7 +213,8 @@ public class Stairs : MonoBehaviour
         {
             levelName.color = levelName.color + new Color(0,0,0, 0.025f);
             colAlph += 0.025f;
-            yield return new WaitForSeconds(0.05f);
+            //yield return new WaitForSeconds(0.05f);
+            yield return new WaitForFixedUpdate();
         }
         levelName.color = new Color(1,1,1,0.8f);
         colAlph = 0.8f;
@@ -204,7 +223,8 @@ public class Stairs : MonoBehaviour
         {
             levelName.color = levelName.color - new Color(0,0,0, 0.025f);
             colAlph -= 0.025f;
-            yield return new WaitForSeconds(0.05f);
+            //yield return new WaitForSeconds(0.05f);
+            yield return new WaitForFixedUpdate();
         }
         levelName.color = new Color(1,1,1,0);
         //destroy this object
@@ -219,19 +239,25 @@ public class Stairs : MonoBehaviour
         //if there is dialogue, go through that first
         if(dialogue.Length > 0)
         {
+            //play call sound
+            if(callSound != null)
+            {
+                callSound.Play();
+            }
             fadeCover.gameObject.SetActive(true);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSecondsRealtime(0.5f);
             dialogueText.text = "";
             dialogueBG.gameObject.SetActive(true);
             //slide in dialogue box
             dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -300);
             while(dialogueBG.GetComponent<RectTransform>().anchoredPosition.y < 0)
             {
-                dialogueBG.GetComponent<RectTransform>().anchoredPosition = dialogueBG.GetComponent<RectTransform>().anchoredPosition + new Vector2(0, 5);
-                yield return new WaitForSeconds(0.0005f);
+                dialogueBG.GetComponent<RectTransform>().anchoredPosition = dialogueBG.GetComponent<RectTransform>().anchoredPosition + new Vector2(0, 25);
+                //yield return new WaitForSeconds(0.0005f);
+                yield return new WaitForFixedUpdate();
             }
             dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSecondsRealtime(0.2f);
             //go through dialogue
             int pointer = 0;
             while(pointer < dialogue.Length)
@@ -243,13 +269,18 @@ public class Stairs : MonoBehaviour
                 {
                     written = toType.Substring(0, written.Length + 1);
                     dialogueText.text = written;
+                    if(clickSound != null)
+                    {
+                        clickSound.Play();
+                    }
                     if(Input.anyKey)//speed up if key pressed
                     {
-                        yield return new WaitForSeconds(0.005f);
+                        //yield return new WaitForSeconds(0.005f);
+                        yield return new WaitForFixedUpdate();
                     }
                     else
                     {
-                        yield return new WaitForSeconds(0.05f);
+                        yield return new WaitForSecondsRealtime(0.05f);
                     }
                     //skip typing
                     if(Input.anyKeyDown)
@@ -265,7 +296,8 @@ public class Stairs : MonoBehaviour
                     if(Input.anyKeyDown)
                     {
                         pointer++;
-                        yield return new WaitForSeconds(0.0005f);
+                        //yield return new WaitForSeconds(0.0005f);
+                        yield return new WaitForFixedUpdate();
                         break;
                     }
                     yield return null;
@@ -275,21 +307,27 @@ public class Stairs : MonoBehaviour
             dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, 0);
             while(dialogueBG.GetComponent<RectTransform>().anchoredPosition.y > -300)
             {
-                dialogueBG.GetComponent<RectTransform>().anchoredPosition = dialogueBG.GetComponent<RectTransform>().anchoredPosition - new Vector2(0, 5);
-                yield return new WaitForSeconds(0.0005f);
+                dialogueBG.GetComponent<RectTransform>().anchoredPosition = dialogueBG.GetComponent<RectTransform>().anchoredPosition - new Vector2(0, 25);
+                //yield return new WaitForSeconds(0.0005f);
+                yield return new WaitForFixedUpdate();
             }
             dialogueBG.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -300);
             dialogueBG.gameObject.SetActive(false);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSecondsRealtime(0.5f);
         }
 
         //fade in
+        if(fadeInSound != null)
+        {
+            fadeInSound.Play();
+        }
         fadeCover.gameObject.SetActive(false);
         fadeRing.GetComponent<RectTransform>().localScale = Vector3.one;
         while(fadeRing.GetComponent<RectTransform>().localScale.x < 30)
         {
-            fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * (fadeRing.GetComponent<RectTransform>().localScale.x + 0.1f);
-            yield return new WaitForSeconds(0.0005f);
+            fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * (fadeRing.GetComponent<RectTransform>().localScale.x + 0.5f);
+            //yield return new WaitForSeconds(0.0005f);
+            yield return new WaitForFixedUpdate();
         }
         fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * 30;
         fadeRing.gameObject.SetActive(false);
@@ -303,7 +341,8 @@ public class Stairs : MonoBehaviour
         {
             levelName.color = levelName.color + new Color(0,0,0, 0.025f);
             colAlph += 0.025f;
-            yield return new WaitForSeconds(0.05f);
+            //yield return new WaitForSeconds(0.05f);
+            yield return new WaitForFixedUpdate();
         }
         levelName.color = new Color(1,1,1,0.8f);
         colAlph = 0.8f;
@@ -312,7 +351,8 @@ public class Stairs : MonoBehaviour
         {
             levelName.color = levelName.color - new Color(0,0,0, 0.025f);
             colAlph -= 0.025f;
-            yield return new WaitForSeconds(0.05f);
+            //yield return new WaitForSeconds(0.05f);
+            yield return new WaitForFixedUpdate();
         }
         levelName.color = new Color(1,1,1,0);
     }

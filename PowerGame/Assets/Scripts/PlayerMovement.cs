@@ -47,6 +47,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GameObject roomService;
     private bool isEvil = false;
 
+    //audio
+    [SerializeField] private AudioSource hurtSound;
+    [SerializeField] private AudioSource deathSound;
+    [SerializeField] private AudioSource tipSound;
+    [SerializeField] private AudioSource summonSound;
+    [SerializeField] private AudioSource clickSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -70,6 +77,7 @@ public class PlayerMovement : MonoBehaviour
             speedX = Input.GetAxisRaw("Horizontal");
             speedY = Input.GetAxisRaw("Vertical");
             rb.velocity = movementSpeed * new Vector2(speedX, speedY).normalized;
+            //rb.MovePosition(new Vector2(transform.position.x, transform.position.y) + (movementSpeed * new Vector2(speedX, speedY).normalized * Time.deltaTime));
             //torch controls
             if(Input.GetKey(KeyCode.Mouse0))
             {
@@ -82,6 +90,11 @@ public class PlayerMovement : MonoBehaviour
                 else
                 {
                     torchLight.SetActive(true);
+                    //torch click/buzz sound
+                    if(clickSound != null)
+                    {
+                        clickSound.Play();
+                    }
                 }
             }
             else
@@ -112,6 +125,11 @@ public class PlayerMovement : MonoBehaviour
                     {             
                         roomService.SetActive(true);           
                         roomService.GetComponent<RoomService>().SummonMe();
+                        //summon sound
+                        if(summonSound != null)
+                        {
+                            summonSound.Play();
+                        }
                     }
                 }
             }
@@ -129,6 +147,11 @@ public class PlayerMovement : MonoBehaviour
                             {
                                 LoseGold(1);   
                                 roomService.GetComponent<RoomService>().TipMe();
+                                //tip sound
+                                if(tipSound != null)
+                                {
+                                    tipSound.Play();
+                                }
                             }
                         }
                     }
@@ -212,12 +235,22 @@ public class PlayerMovement : MonoBehaviour
                 }
                 //start fade out animation
                 StartCoroutine("FadeDeathAnim");
+                //death sound
+                if(deathSound != null)
+                {
+                    deathSound.Play();
+                }
             }
             else
             {
                 isImmune = true;
                 eyeMov.InvinceSet(true);
                 immuneCooldown = 2;
+                //hurt sound
+                if(hurtSound != null)
+                {
+                    hurtSound.Play();
+                }
             }
         }
     }
@@ -232,13 +265,13 @@ public class PlayerMovement : MonoBehaviour
         fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * 30;
         while(fadeRing.GetComponent<RectTransform>().localScale.x > 1)
         {
-            fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * (fadeRing.GetComponent<RectTransform>().localScale.x - 0.1f);
-            transform.position = Vector3.Lerp(transform.position, new Vector3(camPos.transform.position.x, camPos.transform.position.y, -1), 0.01f);
-            yield return new WaitForSeconds(0.0005f);
+            fadeRing.GetComponent<RectTransform>().localScale = Vector3.one * (fadeRing.GetComponent<RectTransform>().localScale.x - 0.5f);
+            transform.position = Vector3.Lerp(transform.position, new Vector3(camPos.transform.position.x, camPos.transform.position.y, -1), 0.05f);
+            yield return new WaitForFixedUpdate();
         }
+        yield return new WaitForSecondsRealtime(0.5f);
         fadeRing.GetComponent<RectTransform>().localScale = Vector3.one;
         fadeCoverDeath.gameObject.SetActive(true);
-        yield return new WaitForSeconds(0.0005f);
     }
 
     //function for doing game win animation
@@ -266,15 +299,15 @@ public class PlayerMovement : MonoBehaviour
         //player walks to mid
         while(Vector3.Distance(transform.position, mid) > 0.01f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, mid, 0.01f);
-            yield return new WaitForSeconds(0.005f);
+            transform.position = Vector3.MoveTowards(transform.position, mid, 0.05f);
+            yield return new WaitForFixedUpdate();
         }
         //player walks out
         mid = new Vector3(mid.x, mid.y - 15, -1);
         while(Vector3.Distance(transform.position, mid) > 0.01f)
         {
-            transform.position = Vector3.MoveTowards(transform.position, mid, 0.01f);
-            yield return new WaitForSeconds(0.005f);
+            transform.position = Vector3.MoveTowards(transform.position, mid, 0.05f);
+            yield return new WaitForFixedUpdate();
         }
         //show end message
         winUI.gameObject.SetActive(true);

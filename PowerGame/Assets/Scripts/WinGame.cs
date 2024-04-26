@@ -6,19 +6,7 @@ public class WinGame : MonoBehaviour
 {
     [SerializeField] private GameObject globalLight;
     private bool used = false;
-
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private AudioSource clickSound;
 
     private void OnTriggerEnter2D(Collider2D col)
     {
@@ -30,6 +18,17 @@ public class WinGame : MonoBehaviour
                 transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
                 globalLight.SetActive(true);
                 col.GetComponent<PlayerMovement>().WinGame();
+                //play switch sound
+                if(clickSound != null)
+                {
+                    clickSound.Play();
+                }
+                //play win music
+                DeeJay dj = FindObjectOfType<DeeJay>();
+                if(dj != null)
+                {
+                    dj.WinMusic();
+                }
             }
         }
     }
