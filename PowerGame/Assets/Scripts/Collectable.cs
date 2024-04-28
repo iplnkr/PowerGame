@@ -11,33 +11,37 @@ public class Collectable : MonoBehaviour
 
     void Start()
     {
-        player = FindObjectOfType<PlayerMovement>();
+        //player = FindObjectOfType<PlayerMovement>();
     }
 
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if(col.GetComponent<PlayerMovement>() != null)
+        if(col != null)
         {
-            if(player.CanLoseGold(cost))
+            if(col.GetComponent<PlayerMovement>() != null)
             {
-                player.LoseGold(cost);
-                //play collect sound
-                if(collectSound != null)
+                player = col.GetComponent<PlayerMovement>();
+                if(player.CanLoseGold(cost))
                 {
-                    //create a temporary object to play sound
-                    GameObject audioHolder = new GameObject();
-                    audioHolder.transform.position = transform.position;
-                    audioHolder.transform.parent = null;
-                    audioHolder.AddComponent<AudioSource>();
-                    AudioSource audSou = audioHolder.GetComponent<AudioSource>();
-                    audSou.clip = collectSound.clip;
-                    audSou.playOnAwake = false;
-                    audSou.volume = 0.25f;
-                    audSou.Play();
-                    Destroy(audioHolder, 5);
+                    player.LoseGold(cost);
+                    //play collect sound
+                    if(collectSound != null)
+                    {
+                        //create a temporary object to play sound
+                        GameObject audioHolder = new GameObject();
+                        audioHolder.transform.position = transform.position;
+                        audioHolder.transform.parent = null;
+                        audioHolder.AddComponent<AudioSource>();
+                        AudioSource audSou = audioHolder.GetComponent<AudioSource>();
+                        audSou.clip = collectSound.clip;
+                        audSou.playOnAwake = false;
+                        audSou.volume = 0.25f;
+                        audSou.Play();
+                        Destroy(audioHolder, 5);
+                    }
+                    Collect();
+                    Destroy(gameObject);
                 }
-                Collect();
-                Destroy(gameObject);
             }
         }
     }
@@ -45,17 +49,20 @@ public class Collectable : MonoBehaviour
     //do collect functionality
     public virtual void Collect()
     {
-        switch (collectableId)
+        if(player != null)
         {
-            case 1:
-                player.GainGold(1);
-                break;
-            case 2:
-                player.GainHP(1);
-                break;
-            case 3:
-                player.GainBattery();
-                break;    
+            switch (collectableId)
+            {
+                case 1:
+                    player.GainGold(1);
+                    break;
+                case 2:
+                    player.GainHP(1);
+                    break;
+                case 3:
+                    player.GainBattery();
+                    break;    
+            }
         }
     }
 }

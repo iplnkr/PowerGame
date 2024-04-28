@@ -20,7 +20,7 @@ public class Stalker : Enemy
         if(cooldown <= 0)
         {
             //how to move when under torch
-            if(toBurn)
+            if(toBurn >= 1)
             {
                 //stay still under torch
             }

@@ -33,7 +33,7 @@ public class RodentKing : Enemy
         if(cooldown <= 0)
         {
             //how to move when under torch
-            if(toBurn)
+            if(toBurn >= 1)
             {
                 //slow movement under torch, but faster spawns
                 speed = 0.25f;

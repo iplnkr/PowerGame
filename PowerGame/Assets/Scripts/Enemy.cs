@@ -7,7 +7,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected float maxHealth = 10;
     protected float currentHealth;
     [SerializeField] private GameObject healthDisplay;
-    protected bool toBurn = false;
+    protected int toBurn = 0;//change to int to count how many torches touching
     protected bool toHeal = false;
     protected bool toDamagePlayer = false;
     private PlayerMovement playerX;
@@ -68,7 +68,7 @@ public class Enemy : MonoBehaviour
             healthDisplay.transform.localPosition = new Vector3(-(1-(currentHealth/maxHealth))/2f, 0, 0);
         }
         //take damage
-        if(toBurn)
+        if(toBurn >= 1)
         {
             currentHealth = currentHealth - (4.5f * Time.fixedDeltaTime);
             if(currentHealth < 0)
@@ -194,7 +194,7 @@ public class Enemy : MonoBehaviour
     {
         if(col.name.Equals("TorchLight"))
         {
-            toBurn = true;
+            toBurn++;
         }
         //if heal
         if(col.name.Equals("TorchAntiLight"))
@@ -225,7 +225,7 @@ public class Enemy : MonoBehaviour
     {
         if(col.name.Equals("TorchLight"))
         {
-            toBurn = false;
+            toBurn--;
         }
         if(col.name.Equals("TorchAntiLight"))
         {

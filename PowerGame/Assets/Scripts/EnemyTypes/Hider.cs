@@ -34,7 +34,7 @@ public class Hider : Enemy
     public override void FixedUpdateAddOn()
     {
         //how to move when under torch
-        if(toBurn)
+        if(toBurn >= 1)
         {
             //get mouse position
             Vector3 mouseWorldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
