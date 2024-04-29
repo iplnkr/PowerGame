@@ -18,12 +18,25 @@ public class Stairs : MonoBehaviour
     [SerializeField] private Image dialogueBG;
     [SerializeField] private Text dialogueText;
     [SerializeField] private RoomService roomServiceGuy;
+    private bool trySkip = false;
 
     //audio
     [SerializeField] private AudioSource fadeInSound;
     [SerializeField] private AudioSource fadeOutSound;
     [SerializeField] private AudioSource clickSound;
     [SerializeField] private AudioSource callSound;
+
+    void Update()
+    {
+        if(Input.anyKeyDown)
+        {
+            trySkip = true;
+        }
+        if(!Input.anyKey)
+        {
+            trySkip = false;
+        }
+    }
 
     void OnDisable()
     {        
@@ -145,19 +158,16 @@ public class Stairs : MonoBehaviour
                     {
                         clickSound.Play();
                     }
-                    if(Input.anyKey)//speed up if key pressed
+                    if(trySkip)//speed up if key pressed
                     {
                         //yield return new WaitForSeconds(0.005f);
+                        trySkip = false;
                         yield return new WaitForFixedUpdate();
+                        break;
                     }
                     else
                     {
                         yield return new WaitForSecondsRealtime(0.05f);
-                    }
-                    //skip typing
-                    if(Input.anyKeyDown)
-                    {
-                        break;
                     }
                     yield return null;
                 }
@@ -168,6 +178,7 @@ public class Stairs : MonoBehaviour
                     if(Input.anyKeyDown)
                     {
                         pointer++;
+                        trySkip = false;
                         //yield return new WaitForSeconds(0.0005f);
                         yield return new WaitForFixedUpdate();
                         break;
@@ -273,19 +284,16 @@ public class Stairs : MonoBehaviour
                     {
                         clickSound.Play();
                     }
-                    if(Input.anyKey)//speed up if key pressed
+                    if(trySkip)//speed up if key pressed
                     {
                         //yield return new WaitForSeconds(0.005f);
+                        trySkip = false;
                         yield return new WaitForFixedUpdate();
+                        break;
                     }
                     else
                     {
                         yield return new WaitForSecondsRealtime(0.05f);
-                    }
-                    //skip typing
-                    if(Input.anyKeyDown)
-                    {
-                        break;
                     }
                     yield return null;
                 }
@@ -296,6 +304,7 @@ public class Stairs : MonoBehaviour
                     if(Input.anyKeyDown)
                     {
                         pointer++;
+                        trySkip = false;
                         //yield return new WaitForSeconds(0.0005f);
                         yield return new WaitForFixedUpdate();
                         break;
