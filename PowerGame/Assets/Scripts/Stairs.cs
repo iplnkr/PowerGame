@@ -19,6 +19,7 @@ public class Stairs : MonoBehaviour
     [SerializeField] private Text dialogueText;
     [SerializeField] private RoomService roomServiceGuy;
     private bool trySkip = false;
+    private bool tryfullSkip = false;
 
     //audio
     [SerializeField] private AudioSource fadeInSound;
@@ -35,6 +36,11 @@ public class Stairs : MonoBehaviour
         if(!Input.anyKey)
         {
             trySkip = false;
+        }
+        //escape dialogue
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            tryfullSkip = true;
         }
     }
 
@@ -158,7 +164,7 @@ public class Stairs : MonoBehaviour
                     {
                         clickSound.Play();
                     }
-                    if(trySkip)//speed up if key pressed
+                    if((trySkip) || (tryfullSkip))//speed up if key pressed
                     {
                         //yield return new WaitForSeconds(0.005f);
                         trySkip = false;
@@ -170,6 +176,12 @@ public class Stairs : MonoBehaviour
                         yield return new WaitForSecondsRealtime(0.05f);
                     }
                     yield return null;
+                }
+                //see if full skipping
+                if(tryfullSkip)
+                {
+                    tryfullSkip = false;
+                    break;
                 }
                 dialogueText.text = dialogue[pointer];
                 //wait until user input for next message
@@ -284,7 +296,7 @@ public class Stairs : MonoBehaviour
                     {
                         clickSound.Play();
                     }
-                    if(trySkip)//speed up if key pressed
+                    if((trySkip) || (tryfullSkip))//speed up if key pressed
                     {
                         //yield return new WaitForSeconds(0.005f);
                         trySkip = false;
@@ -296,6 +308,12 @@ public class Stairs : MonoBehaviour
                         yield return new WaitForSecondsRealtime(0.05f);
                     }
                     yield return null;
+                }
+                //see if full skipping
+                if(tryfullSkip)
+                {
+                    tryfullSkip = false;
+                    break;
                 }
                 dialogueText.text = dialogue[pointer];
                 //wait until user input for next message

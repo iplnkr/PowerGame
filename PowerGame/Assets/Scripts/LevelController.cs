@@ -50,11 +50,13 @@ public class LevelController : MonoBehaviour
     public void GenerateFloorForLevel(int levelID)
     {
         int roomCount = 15;//how many rooms are in a floor
+        LevelIndicator levInd = FindObjectOfType<LevelIndicator>();//get the level indicator, to edit
         switch (levelID)
         {
             //level 1
             case 1:
                 levelName.text = "3rd Floor";
+                levInd.SetLevelIndication(levelName.text);
                 GenerateFloor(roomCount);
                 //Insert rooms
                 for(int i = 2; i < roomCount; i++)
@@ -73,6 +75,7 @@ public class LevelController : MonoBehaviour
             //level 2
             case 2:
                 levelName.text = "2nd Floor";
+                levInd.SetLevelIndication(levelName.text);
                 GenerateFloor(roomCount);
                 //Insert rooms
                 for(int i = 2; i < roomCount; i++)
@@ -91,6 +94,7 @@ public class LevelController : MonoBehaviour
             //level 3
             case 3:
                 levelName.text = "1st Floor";
+                levInd.SetLevelIndication(levelName.text);
                 GenerateFloor(roomCount);
                 //Insert rooms
                 for(int i = 2; i < roomCount; i++)
@@ -109,6 +113,7 @@ public class LevelController : MonoBehaviour
             //level 1 Boss
             case -1:
                 levelName.text = "3rd Floor Stairwell";
+                levInd.SetLevelIndication(levelName.text);
                 GenerateLineFloor(3);
                 DecorateRoom(2, roomPal.GetBossRoomLayout(0));
                 DecorateRoom(3, roomPal.GetExitRoomLayout(3));
@@ -116,6 +121,7 @@ public class LevelController : MonoBehaviour
             //level 2 Boss
             case -2:
                 levelName.text = "2nd Floor Stairwell";
+                levInd.SetLevelIndication(levelName.text);
                 GenerateLineFloor(3);
                 DecorateRoom(2, roomPal.GetBossRoomLayout(1));
                 DecorateRoom(3, roomPal.GetExitRoomLayout(4));
@@ -123,6 +129,7 @@ public class LevelController : MonoBehaviour
             //level 3 Boss
             case -3:
                 levelName.text = "1st Floor Stairwell";
+                levInd.SetLevelIndication(levelName.text);
                 GenerateLineFloor(3);
                 DecorateRoom(2, roomPal.GetBossRoomLayout(2));
                 DecorateRoom(3, roomPal.GetExitRoomLayout(6));
@@ -130,6 +137,7 @@ public class LevelController : MonoBehaviour
             //tutorial
             case 0:
                 levelName.text = "Your Room";
+                levInd.SetLevelIndication(levelName.text);
                 GenerateLineFloor(3);
                 DecorateRoom(1, roomPal.GetSpecialRoomLayout(1));
                 DecorateRoom(2, roomPal.GetSpecialRoomLayout(2));
@@ -392,11 +400,11 @@ public class LevelController : MonoBehaviour
     {
         Vector2 uiDest = new Vector2((-roomList[roomGrid[Mathf.RoundToInt(currentRoom.x + -Mathf.Cos(Mathf.Deg2Rad * direction * 90)), Mathf.RoundToInt(currentRoom.y + Mathf.Sin(Mathf.Deg2Rad * direction * 90))] - 1].GetPosition().x + ((mapMax + 1) / 2)) * demoUiRoom.GetComponent<RectTransform>().sizeDelta.x, (-roomList[roomGrid[Mathf.RoundToInt(currentRoom.x + -Mathf.Cos(Mathf.Deg2Rad * direction * 90)), Mathf.RoundToInt(currentRoom.y + Mathf.Sin(Mathf.Deg2Rad * direction * 90))] - 1].GetPosition().y + ((mapMax + 1) / 2)) * demoUiRoom.GetComponent<RectTransform>().sizeDelta.y);
         Vector3 destPos = new Vector3(16*Mathf.RoundToInt(currentRoom.x + -Mathf.Cos(Mathf.Deg2Rad * direction * 90) - ((mapMax + 1) / 2)), 10*Mathf.RoundToInt(currentRoom.y + Mathf.Sin(Mathf.Deg2Rad * direction * 90) - ((mapMax + 1) / 2)), -10);
-        for(int i = 0; i < 65; i++)
+        for(int i = 0; i < 60; i++)
         {
-            mainCam.transform.position = Vector3.Lerp(mainCam.transform.position, destPos, 0.075f);
-            miniMapPanel.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(miniMapPanel.GetComponent<RectTransform>().anchoredPosition, uiDest, 0.075f);
-            yield return new WaitForSeconds(0.01f);
+            mainCam.transform.position = Vector3.Lerp(mainCam.transform.position, destPos, 0.1f);
+            miniMapPanel.GetComponent<RectTransform>().anchoredPosition = Vector2.Lerp(miniMapPanel.GetComponent<RectTransform>().anchoredPosition, uiDest, 0.1f);
+            yield return new WaitForFixedUpdate();
         }
         mainCam.transform.position = destPos;
         miniMapPanel.GetComponent<RectTransform>().anchoredPosition = uiDest;
@@ -406,11 +414,14 @@ public class LevelController : MonoBehaviour
     {
         Vector3 destPos = new Vector3((player.transform.position.x + 3.015f*-Mathf.Cos(Mathf.Deg2Rad * direction * 90)), (player.transform.position.y + 3.015f*Mathf.Sin(Mathf.Deg2Rad * direction * 90)), player.transform.position.z);
         player.GetComponent<BoxCollider2D>().enabled = false;
-        for(int i = 0; i < 75; i++)
+        player.GetComponent<PlayerMovement>().SetMovementCooldown(1);//Added check to ensure no door stickiness
+        for(int i = 0; i < 60; i++)
         {
-            player.transform.position = Vector3.Lerp(player.transform.position, destPos, 0.2f);
-            yield return new WaitForSeconds(0.01f);
+            player.transform.position = Vector3.Lerp(player.transform.position, destPos, 0.25f);
+            player.GetComponent<PlayerMovement>().SetMovementCooldown(1);//Added check to ensure no door stickiness
+            yield return new WaitForFixedUpdate();
         }
         player.GetComponent<BoxCollider2D>().enabled = true;
+        player.GetComponent<PlayerMovement>().SetMovementCooldown(0);//Added check to ensure no door stickiness
     }
 }

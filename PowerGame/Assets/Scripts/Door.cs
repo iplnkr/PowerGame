@@ -45,7 +45,7 @@ public class Door : MonoBehaviour
                     {
                         doorCooldown = waitTime;
                         isLeadingDoor = true;
-                        col.GetComponent<PlayerMovement>().SetMovementCooldown(waitTime);
+                        //col.GetComponent<PlayerMovement>().SetMovementCooldown(waitTime);
                         floorGen.MoveRoom(direction);
                     }
                 }

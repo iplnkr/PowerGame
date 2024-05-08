@@ -32,6 +32,18 @@ public class DeeJay : MonoBehaviour
         }
     }
 
+    void Update()
+    {
+        //mute/unmute combo
+        if ((Input.GetKey("left shift")) || (Input.GetKey("right shift")))
+        {
+            if(Input.GetKeyDown("m"))
+            {
+                AudioListener.volume = 1 - AudioListener.volume;
+            }
+        }
+    }
+
     private IEnumerator FadeIn()
     {
         levelMusicCalm.volume = 0;

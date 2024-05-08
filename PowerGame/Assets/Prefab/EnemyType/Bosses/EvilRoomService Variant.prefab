@@ -450,6 +450,10 @@ PrefabInstance:
       value: TorchAntiLight
       objectReference: {fileID: 0}
     - target: {fileID: 1724845772606891929, guid: a5f3d163c9ac82d4b9f4632802427905, type: 3}
+      propertyPath: m_Color.a
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1724845772606891929, guid: a5f3d163c9ac82d4b9f4632802427905, type: 3}
       propertyPath: m_Color.b
       value: 0.9254902
       objectReference: {fileID: 0}
